@@ -1,4 +1,4 @@
-/* Fondo de lluvia animado - Blanco con luces azules */
+/* Estilos base del contenedor */
 .login-container {
   position: relative;
   width: 100vw;
@@ -7,16 +7,57 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  transition: background-color 0.5s ease;
+}
+
+/* Modo claro */
+.login-container.light-mode {
   background-color: #ffffff;
 }
 
-/* Fondo de lluvia - Blanco con luces azules */
+/* Modo oscuro */
+.login-container.dark-mode {
+  background-color: #0a0a0a;
+}
+
+/* Fondo de lluvia - Modo claro */
+.rain-bg.rain-light {
+  --c: #4a9eff;
+  background-color: #ffffff;
+  opacity: 0.8;
+}
+
+.rain-bg.rain-light::after {
+  backdrop-filter: blur(0.5em) brightness(0.8);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #0000 0,
+    #0000 2px,
+    rgba(200, 220, 255, 0.3) 2px
+  );
+}
+
+/* Fondo de lluvia - Modo oscuro */
+.rain-bg.rain-dark {
+  --c: #4a9eff;
+  background-color: #0a0a0a;
+  opacity: 0.6;
+}
+
+.rain-bg.rain-dark::after {
+  backdrop-filter: blur(1em) brightness(4);
+  background-image: radial-gradient(
+    circle at 50% 50%,
+    #0000 0,
+    #0000 2px,
+    rgba(10, 30, 60, 0.6) 2px
+  );
+}
+
 .rain-bg {
   position: absolute;
   inset: 0;
   z-index: 0;
-  --c: #4a9eff;
-  background-color: #ffffff;
   background-image: 
     radial-gradient(4px 100px at 0px 235px, var(--c), #0000),
     radial-gradient(4px 100px at 300px 235px, var(--c), #0000),
@@ -68,7 +109,6 @@
     300px 158px, 300px 158px, 300px 158px,
     300px 210px, 300px 210px, 300px 210px;
   animation: rain 150s linear infinite;
-  opacity: 0.8;
 }
 
 .rain-bg::after {
@@ -76,13 +116,6 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  backdrop-filter: blur(0.5em) brightness(0.8);
-  background-image: radial-gradient(
-    circle at 50% 50%,
-    #0000 0,
-    #0000 2px,
-    rgba(200, 220, 255, 0.3) 2px
-  );
   background-size: 8px 8px;
 }
 
@@ -119,125 +152,260 @@
   }
 }
 
-/* Contenedor del login - Tamaño reducido */
+/* Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+
+.logo-image {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(74, 158, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.logo-image:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(74, 158, 255, 0.5);
+}
+
+/* Contenedor del login */
 .container {
   position: relative;
   z-index: 2;
-  max-width: 280px;
+  max-width: 250px;
+  border-radius: 25px;
+  padding: 15px 20px;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  width: 100%;
+  transition: all 0.5s ease;
+}
+
+/* Modo claro */
+.container-light {
   background: rgba(255, 255, 255, 0.95);
   background: linear-gradient(
     0deg,
     rgba(255, 255, 255, 0.98) 0%,
     rgba(244, 247, 251, 0.98) 100%
   );
-  border-radius: 30px;
-  padding: 20px 25px;
-  border: 4px solid rgba(255, 255, 255, 0.9);
-  box-shadow: rgba(74, 158, 255, 0.3) 0px 20px 20px -15px;
-  width: 100%;
-  backdrop-filter: blur(10px);
+  box-shadow: rgba(74, 158, 255, 0.2) 0px 15px 15px -12px;
 }
 
-.heading {
+/* Modo oscuro */
+.container-dark {
+  background: rgba(10, 20, 40, 0.95);
+  background: linear-gradient(
+    0deg,
+    rgba(10, 20, 40, 0.98) 0%,
+    rgba(20, 40, 80, 0.98) 100%
+  );
+  box-shadow: rgba(74, 158, 255, 0.15) 0px 15px 15px -12px;
+  border-color: rgba(74, 158, 255, 0.3);
+}
+
+/* Error de login */
+.login-error {
   text-align: center;
-  font-weight: 800;
-  font-size: 22px;
-  color: rgb(16, 137, 211);
+  color: #ff4444;
+  font-size: 12px;
+  margin-top: 5px;
   margin-bottom: 5px;
+  padding: 5px;
+  background: rgba(255, 68, 68, 0.1);
+  border-radius: 8px;
 }
 
-.form {
-  margin-top: 12px;
-}
-
+/* Inputs - LETRAS OSCURAS EN MODO CLARO Y OSCURO */
 .form .input {
   width: 100%;
-  background: #f8fafc;
   border: none;
-  padding: 10px 15px;
-  border-radius: 15px;
-  margin-top: 10px;
-  box-shadow: rgba(74, 158, 255, 0.1) 0px 8px 8px -5px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  margin-top: 8px;
   border-inline: 2px solid transparent;
   transition: all 0.3s ease;
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 13px;
+  color: #1a1a2e !important; /* Letras oscuras SIEMPRE */
 }
 
-.form .input::placeholder {
-  color: rgb(170, 170, 170);
-  font-size: 13px;
+.container-light .input {
+  background: #f8fafc;
+  box-shadow: rgba(74, 158, 255, 0.08) 0px 6px 6px -4px;
+  color: #1a1a2e !important;
+}
+
+.container-dark .input {
+  background: #0a1a2e;
+  box-shadow: rgba(74, 158, 255, 0.08) 0px 6px 6px -4px;
+  color: #1a1a2e !important; /* Letras oscuras en modo oscuro también */
+}
+
+.container-dark .input::placeholder {
+  color: #6a8aaa;
 }
 
 .form .input:focus {
   outline: none;
   border-inline: 2px solid #12b1d1;
-  background: #ffffff;
+  color: #1a1a2e !important;
 }
 
+.container-dark .input:focus {
+  border-inline: 2px solid #4a9eff;
+  background: #eef4fa;
+  color: #1a1a2e !important;
+}
+
+/* Wrapper para el campo de contraseña */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 40px !important;
+}
+
+/* Botón de mostrar/ocultar contraseña */
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-40%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: #6a8aaa;
+}
+
+.password-toggle:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #4a9eff;
+}
+
+.password-toggle .eye-icon {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+}
+
+.container-dark .password-toggle {
+  color: #6a8aaa;
+}
+
+.container-dark .password-toggle:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #4a9eff;
+}
+
+/* Error messages */
 .error-message {
   color: #ff4444;
-  font-size: 11px;
-  margin-top: 3px;
+  font-size: 10px;
+  margin-top: 2px;
   display: block;
-  padding-left: 10px;
+  padding-left: 8px;
 }
 
+/* Forgot password */
 .form .forgot-password {
   display: block;
-  margin-top: 6px;
-  margin-left: 8px;
+  margin-top: 4px;
+  margin-left: 6px;
 }
 
 .form .forgot-password a {
-  font-size: 10px;
-  color: #0099ff;
+  font-size: 9px;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-.form .forgot-password a:hover {
+.container-light .forgot-password a {
+  color: #0099ff;
+}
+
+.container-dark .forgot-password a {
+  color: #4a9eff;
+}
+
+.container-light .forgot-password a:hover {
   color: #0066cc;
 }
 
+.container-dark .forgot-password a:hover {
+  color: #6ab0ff;
+}
+
+/* Login button */
 .form .login-button {
   display: block;
   width: 100%;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 13px;
+  padding-block: 8px;
+  margin: 10px auto 3px;
+  border-radius: 12px;
+  border: none;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.container-light .login-button {
   background: linear-gradient(
     45deg,
     rgb(16, 137, 211) 0%,
     rgb(18, 177, 209) 100%
   );
   color: white;
-  padding-block: 10px;
-  margin: 12px auto 5px;
-  border-radius: 15px;
-  box-shadow: rgba(74, 158, 255, 0.3) 0px 15px 10px -12px;
-  border: none;
-  transition: all 0.2s ease-in-out;
-  cursor: pointer;
+  box-shadow: rgba(74, 158, 255, 0.25) 0px 12px 8px -10px;
 }
 
-.form .login-button:hover {
+.container-dark .login-button {
+  background: linear-gradient(
+    45deg,
+    #1a5fa8 0%,
+    #4a9eff 100%
+  );
+  color: white;
+  box-shadow: rgba(74, 158, 255, 0.25) 0px 12px 8px -10px;
+}
+
+.container-light .login-button:hover {
   transform: scale(1.02);
-  box-shadow: rgba(74, 158, 255, 0.4) 0px 18px 10px -15px;
+  box-shadow: rgba(74, 158, 255, 0.35) 0px 15px 10px -12px;
+}
+
+.container-dark .login-button:hover {
+  transform: scale(1.02);
+  box-shadow: rgba(74, 158, 255, 0.4) 0px 15px 10px -12px;
 }
 
 .form .login-button:active {
   transform: scale(0.95);
-  box-shadow: rgba(74, 158, 255, 0.2) 0px 10px 10px -8px;
 }
 
+/* Social accounts */
 .social-account-container {
-  margin-top: 15px;
+  margin-top: 10px;
 }
 
 .social-account-container .title {
   display: block;
   text-align: center;
-  font-size: 9px;
+  font-size: 8px;
   color: rgb(170, 170, 170);
 }
 
@@ -245,70 +413,261 @@
   width: 100%;
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-top: 5px;
+  gap: 10px;
+  margin-top: 4px;
 }
 
 .social-account-container .social-accounts .social-button {
-  background: linear-gradient(45deg, #e8edf5 0%, #d5dce8 100%);
-  border: 4px solid white;
-  padding: 4px;
+  padding: 3px;
   border-radius: 50%;
-  width: 32px;
+  width: 28px;
   aspect-ratio: 1;
   display: grid;
   place-content: center;
-  box-shadow: rgba(74, 158, 255, 0.2) 0px 8px 8px -6px;
   transition: all 0.2s ease-in-out;
   cursor: pointer;
+  border: 3px solid;
 }
 
-.social-account-container .social-accounts .social-button .svg {
+.container-light .social-button {
+  background: linear-gradient(45deg, #e8edf5 0%, #d5dce8 100%);
+  border-color: white;
+  box-shadow: rgba(74, 158, 255, 0.2) 0px 8px 8px -6px;
+}
+
+.container-dark .social-button {
+  background: linear-gradient(45deg, #0a1a30 0%, #1a3a6a 100%);
+  border-color: #0a1a30;
+  box-shadow: rgba(74, 158, 255, 0.15) 0px 8px 8px -6px;
+}
+
+.container-light .social-button .svg {
   fill: #2c3e50;
-  margin: auto;
-  width: 16px;
-  height: 16px;
+}
+
+.container-dark .social-button .svg {
+  fill: #4a9eff;
 }
 
 .social-account-container .social-accounts .social-button:hover {
   transform: scale(1.15);
-  background: linear-gradient(45deg, #d5dce8 0%, #c0cbd8 100%);
 }
 
-.social-account-container .social-accounts .social-button:active {
-  transform: scale(0.9);
-}
-
+/* Agreement */
 .agreement {
   display: block;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .agreement a {
   text-decoration: none;
-  color: #0099ff;
-  font-size: 8px;
+  font-size: 7px;
   transition: color 0.3s ease;
 }
 
-.agreement a:hover {
+.container-light .agreement a {
+  color: #0099ff;
+}
+
+.container-dark .agreement a {
+  color: #4a9eff;
+}
+
+.container-light .agreement a:hover {
   color: #0066cc;
 }
 
-/* Responsive para móviles */
+.container-dark .agreement a:hover {
+  color: #6ab0ff;
+}
+
+/* Pantalla "En Proceso" */
+.in-progress-container {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.in-progress-card {
+  max-width: 350px;
+  padding: 40px 35px;
+  border-radius: 30px;
+  text-align: center;
+  border: 3px solid rgba(255, 255, 255, 0.9);
+  transition: all 0.5s ease;
+  animation: fadeIn 0.8s ease;
+}
+
+.in-progress-card.container-light {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: rgba(74, 158, 255, 0.2) 0px 20px 20px -15px;
+}
+
+.in-progress-card.container-dark {
+  background: rgba(10, 20, 40, 0.95);
+  border-color: rgba(74, 158, 255, 0.3);
+  box-shadow: rgba(74, 158, 255, 0.15) 0px 20px 20px -15px;
+}
+
+.in-progress-icon {
+  font-size: 64px;
+  margin-bottom: 15px;
+  animation: bounce 2s infinite;
+}
+
+.in-progress-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.text-light {
+  color: rgb(16, 137, 211);
+}
+
+.text-dark {
+  color: #4a9eff;
+}
+
+.in-progress-subtitle {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.text-light .in-progress-subtitle {
+  color: #555;
+}
+
+.text-dark .in-progress-subtitle {
+  color: #8ab4f0;
+}
+
+.loading-dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite both;
+}
+
+.container-light .dot {
+  background: rgb(16, 137, 211);
+}
+
+.container-dark .dot {
+  background: #4a9eff;
+}
+
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
+}
+
+.dot:nth-child(2) {
+  animation-delay: -0.16s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0s;
+}
+
+.logout-button {
+  padding: 10px 30px;
+  border-radius: 12px;
+  border: none;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.container-light .logout-button {
+  background: #ff4444;
+  color: white;
+}
+
+.container-dark .logout-button {
+  background: #cc3333;
+  color: white;
+}
+
+.logout-button:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Responsive */
 @media (max-width: 480px) {
   .container {
-    max-width: 260px;
-    padding: 15px 20px;
+    max-width: 220px;
+    padding: 12px 15px;
   }
   
-  .heading {
-    font-size: 20px;
+  .logo-image {
+    width: 65px;
+    height: 65px;
   }
   
   .form .input {
-    padding: 8px 12px;
-    font-size: 13px;
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+  
+  .password-toggle .eye-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .in-progress-card {
+    max-width: 300px;
+    padding: 30px 20px;
+  }
+  
+  .in-progress-title {
+    font-size: 26px;
   }
 }

@@ -1,18 +1,29 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
+import ThemeSwitch from './ThemeSwitch';
 import './Login.css';
+
+// Importar el logo
+import logo from '../assets/images/logo_colca1.png';
 
 interface LoginForm {
   email: string;
   password: string;
 }
 
-const Login: React.FC = () => {
+interface LoginProps {
+  onLogin?: (success: boolean) => void;
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: ''
   });
-
   const [errors, setErrors] = useState<Partial<LoginForm>>({});
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
+  const [loginError, setLoginError] = useState<string>('');
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,21 +31,19 @@ const Login: React.FC = () => {
       ...formData,
       [name]: value
     });
+    // Limpiar errores al escribir
+    setLoginError('');
   };
 
   const validateForm = (): boolean => {
     const newErrors: Partial<LoginForm> = {};
 
     if (!formData.email) {
-      newErrors.email = 'El correo es requerido';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Correo inválido';
+      newErrors.email = 'El usuario es requerido';
     }
 
     if (!formData.password) {
       newErrors.password = 'La contraseña es requerida';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Mínimo 6 caracteres';
     }
 
     setErrors(newErrors);
@@ -43,36 +52,126 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoginError('');
+    
     if (validateForm()) {
-      console.log('Login exitoso:', formData);
+      // Validar credenciales
+      if (formData.email === 'admin' && formData.password === 'admin') {
+        console.log('Login exitoso');
+        setIsLoggedIn(true);
+        if (onLogin) {
+          onLogin(true);
+        }
+      } else {
+        setLoginError('Usuario o contraseña incorrectos');
+        // Limpiar campos
+        setFormData({
+          email: '',
+          password: ''
+        });
+      }
     }
   };
 
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
+  // Si está logueado, mostrar pantalla "En proceso"
+  if (isLoggedIn) {
+    return (
+      <div className={`login-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+        <div className={`rain-bg ${isDarkMode ? 'rain-dark' : 'rain-light'}`}></div>
+        <ThemeSwitch isDark={isDarkMode} onToggle={toggleTheme} />
+        <div className="in-progress-container">
+          <div className={`in-progress-card ${isDarkMode ? 'container-dark' : 'container-light'}`}>
+            <div className="in-progress-icon">🚀</div>
+            <h1 className={`in-progress-title ${isDarkMode ? 'text-dark' : 'text-light'}`}>
+              En Proceso
+            </h1>
+            <p className={`in-progress-subtitle ${isDarkMode ? 'text-dark' : 'text-light'}`}>
+              Estamos trabajando en el sistema
+            </p>
+            <div className="loading-dots">
+              <span className="dot"></span>
+              <span className="dot"></span>
+              <span className="dot"></span>
+            </div>
+            <button 
+              className="logout-button"
+              onClick={() => {
+                setIsLoggedIn(false);
+                setFormData({ email: '', password: '' });
+              }}
+            >
+              Cerrar Sesión
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="login-container">
-      <div className="rain-bg"></div>
-      <div className="container">
-        <div className="heading">Iniciar Sesión</div>
+    <div className={`login-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
+      <div className={`rain-bg ${isDarkMode ? 'rain-dark' : 'rain-light'}`}></div>
+      
+      <ThemeSwitch isDark={isDarkMode} onToggle={toggleTheme} />
+      
+      <div className={`container ${isDarkMode ? 'container-dark' : 'container-light'}`}>
+        {/* Logo - Sin título */}
+        <div className="logo-container">
+          <img src={logo} alt="Logo Colca" className="logo-image" />
+        </div>
+
+        {loginError && <div className="login-error">{loginError}</div>}
 
         <form className="form" onSubmit={handleSubmit}>
           <input
-            type="email"
+            type="text"
             name="email"
             className="input"
-            placeholder="Correo electrónico"
+            placeholder="Usuario"
             value={formData.email}
             onChange={handleChange}
+            autoComplete="username"
           />
           {errors.email && <span className="error-message">{errors.email}</span>}
 
-          <input
-            type="password"
-            name="password"
-            className="input"
-            placeholder="Contraseña"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <div className="password-wrapper">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              className="input password-input"
+              placeholder="Contraseña"
+              value={formData.password}
+              onChange={handleChange}
+              autoComplete="current-password"
+            />
+            <button 
+              type="button"
+              className="password-toggle"
+              onClick={togglePasswordVisibility}
+              aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+            >
+              {showPassword ? (
+                <svg className="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                  <line x1="1" y1="1" x2="23" y2="23" />
+                </svg>
+              ) : (
+                <svg className="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              )}
+            </button>
+          </div>
           {errors.password && <span className="error-message">{errors.password}</span>}
 
           <div className="forgot-password">
