@@ -1,6 +1,7 @@
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import ThemeSwitch from './ThemeSwitch';
 import './Login.css';
+import Dashboard from '../pages/Dashboard';
 
 // Importar el logo
 import logo from '../assets/images/logo_colca1.png';
@@ -83,37 +84,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   // Si está logueado, mostrar pantalla "En proceso"
   if (isLoggedIn) {
-    return (
-      <div className={`login-container ${isDarkMode ? 'dark-mode' : 'light-mode'}`}>
-        <div className={`rain-bg ${isDarkMode ? 'rain-dark' : 'rain-light'}`}></div>
-        <ThemeSwitch isDark={isDarkMode} onToggle={toggleTheme} />
-        <div className="in-progress-container">
-          <div className={`in-progress-card ${isDarkMode ? 'container-dark' : 'container-light'}`}>
-            <div className="in-progress-icon">🚀</div>
-            <h1 className={`in-progress-title ${isDarkMode ? 'text-dark' : 'text-light'}`}>
-              En Proceso
-            </h1>
-            <p className={`in-progress-subtitle ${isDarkMode ? 'text-dark' : 'text-light'}`}>
-              Estamos trabajando en el sistema
-            </p>
-            <div className="loading-dots">
-              <span className="dot"></span>
-              <span className="dot"></span>
-              <span className="dot"></span>
-            </div>
-            <button 
-              className="logout-button"
-              onClick={() => {
-                setIsLoggedIn(false);
-                setFormData({ email: '', password: '' });
-              }}
-            >
-              Cerrar Sesión
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+      return <Dashboard onLogout={() => {
+      setIsLoggedIn(false);
+      setFormData({ email: '', password: '' });
+    }} />;
   }
 
   return (
