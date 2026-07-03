@@ -199,16 +199,6 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           </div>
           <div className="header-right">
             <ThemeSwitch isDark={isDarkMode} onToggle={toggleTheme} />
-            <button onClick={onLogout} className="btn-glass btn-glass--danger btn-glass--logout" type="button">
-              <span className="btn-glass-outer">
-                <span className="btn-glass-inner">
-                  <span className="btn-glass-icon">
-                    <IconLogout />
-                  </span>
-                  <span className="btn-glass-label">Cerrar Sesión</span>
-                </span>
-              </span>
-            </button>
           </div>
         </div>
       </header>
@@ -419,6 +409,20 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
             </table>
           )}
         </div>
+
+        {/* Cerrar sesión: al final de todo el contenido, lejos del header */}
+        <footer className="dashboard-footer">
+          <button onClick={onLogout} className="btn-glass btn-glass--danger" type="button">
+            <span className="btn-glass-outer">
+              <span className="btn-glass-inner">
+                <span className="btn-glass-icon">
+                  <IconLogout />
+                </span>
+                <span className="btn-glass-label">Cerrar Sesión</span>
+              </span>
+            </span>
+          </button>
+        </footer>
       </main>
     </div>
   );

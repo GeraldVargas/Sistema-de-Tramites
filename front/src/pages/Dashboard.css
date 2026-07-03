@@ -88,7 +88,7 @@
   left: 0;
   right: 0;
   z-index: 100;
-  padding: 10px 30px;
+  padding: 14px 30px;
   background: var(--header-bg);
   border-bottom: 1px solid var(--header-border);
   box-shadow: var(--header-shadow);
@@ -132,9 +132,7 @@
 
 .header-right {
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
+  align-items: center;
 }
 
 .logout-icon {
@@ -154,7 +152,7 @@
   height: 100vh;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 112px 30px 40px;
+  padding: 96px 30px 40px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-soft) transparent;
@@ -770,6 +768,16 @@
 }
 
 /* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.dashboard-footer {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 12px;
+}
+
+/* ==========================================================================
    Animations
    ========================================================================== */
 
@@ -802,7 +810,7 @@
 
 @media (max-width: 768px) {
   .dashboard-main {
-    padding: 118px 16px 24px;
+    padding: 84px 16px 24px;
   }
 
   .stats-grid {
@@ -829,14 +837,6 @@
   .header-logo {
     width: 34px;
     height: 34px;
-  }
-
-  .btn-glass--logout .btn-glass-inner span.btn-glass-label {
-    display: none;
-  }
-
-  .btn-glass--logout .btn-glass-inner {
-    padding: 8px 12px;
   }
 
   .tramites-table {
