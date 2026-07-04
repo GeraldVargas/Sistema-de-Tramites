@@ -1,0 +1,244 @@
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 90;
+  padding: 12px 30px;
+  border-top: 1px solid transparent;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.footer-light {
+  background: rgba(255, 255, 255, 0.92);
+  border-top-color: rgba(74, 158, 255, 0.08);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.03);
+}
+
+.footer-dark {
+  background: rgba(10, 20, 40, 0.92);
+  border-top-color: rgba(74, 158, 255, 0.15);
+  box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2);
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+  margin: 0 auto;
+  gap: 20px;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.footer-copyright {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.footer-light .footer-copyright {
+  color: #6a7a8a;
+}
+
+.footer-dark .footer-copyright {
+  color: #6d87b8;
+}
+
+.footer-center {
+  display: flex;
+  align-items: center;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-link {
+  font-size: 12px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  padding: 4px 6px;
+  border-radius: 4px;
+}
+
+.footer-light .footer-link {
+  color: #6a7a8a;
+}
+
+.footer-dark .footer-link {
+  color: #6d87b8;
+}
+
+.footer-link:hover {
+  transform: translateY(-1px);
+}
+
+.footer-light .footer-link:hover {
+  color: #4a9eff;
+}
+
+.footer-dark .footer-link:hover {
+  color: #4a9eff;
+}
+
+.footer-divider {
+  font-size: 12px;
+  opacity: 0.4;
+  user-select: none;
+}
+
+.footer-light .footer-divider {
+  color: #6a7a8a;
+}
+
+.footer-dark .footer-divider {
+  color: #6d87b8;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+/* Botón de cerrar sesión en el footer */
+.footer-logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 18px;
+  border: none;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.logout-light {
+  background: #ff4444;
+  color: white;
+  box-shadow: 0 2px 12px rgba(255, 68, 68, 0.25);
+}
+
+.logout-dark {
+  background: #cc3333;
+  color: white;
+  box-shadow: 0 2px 12px rgba(204, 51, 51, 0.3);
+}
+
+.footer-logout-btn:hover {
+  transform: scale(1.04);
+  box-shadow: 0 4px 20px rgba(255, 68, 68, 0.4);
+}
+
+.footer-logout-btn:active {
+  transform: scale(0.95);
+}
+
+.footer-logout-btn .logout-icon {
+  width: 16px;
+  height: 16px;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 10px 16px;
+  }
+
+  .footer-content {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .footer-left {
+    order: 2;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer-center {
+    order: 1;
+  }
+
+  .footer-right {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .footer-copyright {
+    font-size: 10px;
+    text-align: center;
+  }
+
+  .footer-link {
+    font-size: 10px;
+  }
+
+  .footer-divider {
+    font-size: 10px;
+  }
+
+  .footer-logout-btn {
+    padding: 5px 14px;
+    font-size: 12px;
+  }
+
+  .footer-logout-btn .logout-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer {
+    padding: 8px 12px;
+  }
+
+  .footer-content {
+    gap: 8px;
+  }
+
+  .footer-logout-btn {
+    padding: 4px 12px;
+    font-size: 11px;
+  }
+
+  .footer-logout-btn .logout-icon {
+    width: 12px;
+    height: 12px;
+  }
+
+  .footer-copyright {
+    font-size: 9px;
+  }
+
+  .footer-link {
+    font-size: 9px;
+  }
+
+  .footer-divider {
+    font-size: 9px;
+  }
+}

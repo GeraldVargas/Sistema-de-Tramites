@@ -152,7 +152,7 @@
   height: 100vh;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 96px 30px 40px;
+  padding: 96px 30px 90px; /* Aumentar padding inferior para el footer */
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-soft) transparent;
@@ -810,7 +810,7 @@
 
 @media (max-width: 768px) {
   .dashboard-main {
-    padding: 84px 16px 24px;
+    padding: 84px 16px 80px;
   }
 
   .stats-grid {
