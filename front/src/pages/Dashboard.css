@@ -11,6 +11,8 @@
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   transition: background-color 0.4s ease, color 0.4s ease;
+  margin: 0;
+  padding: 0;
 }
 
 .dashboard-container.light-mode {
@@ -94,6 +96,7 @@
   box-shadow: var(--header-shadow);
   backdrop-filter: blur(10px);
   transition: background-color 0.3s ease, border-color 0.3s ease;
+  width: 100%;
 }
 
 .header-content {
@@ -150,9 +153,10 @@
   position: relative;
   z-index: 1;
   height: 100vh;
+  width: 100%;
   max-width: 1400px;
   margin: 0 auto;
-  padding: 96px 30px 90px; /* Aumentar padding inferior para el footer */
+  padding: 96px 30px 90px;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--accent-soft) transparent;
@@ -348,6 +352,15 @@
   --glass-icon-color: #b8860a;
 }
 
+.btn-glass--info {
+  --glass-bg: rgba(26, 95, 168, 0.85);
+  --glass-inner-from: rgba(180, 220, 255, 1);
+  --glass-inner-to: rgba(130, 190, 250, 1);
+  --glass-label-from: rgba(26, 95, 168, 1);
+  --glass-label-to: rgba(26, 95, 168, 1);
+  --glass-icon-color: #1a5fa8;
+}
+
 /* Tamaño compacto — para acciones dentro de la tabla */
 .btn-glass--sm .btn-glass-inner {
   padding: 6px 16px;
@@ -475,7 +488,7 @@
 }
 
 /* ==========================================================================
-   Modal
+   Modal - Actualizado con scroll
    ========================================================================== */
 
 .modal-overlay {
@@ -488,17 +501,21 @@
   background: rgba(10, 15, 25, 0.55);
   backdrop-filter: blur(6px);
   animation: fadeIn 0.2s ease;
+  padding: 20px;
 }
 
 .modal-content {
   width: 90%;
   max-width: 480px;
+  max-height: 90vh;
   padding: 28px;
   border-radius: var(--radius-lg);
   background: var(--surface-bg);
   border: 1px solid var(--surface-border);
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
   animation: slideUp 0.25s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .modal-header {
@@ -506,6 +523,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 22px;
+  flex-shrink: 0;
 }
 
 .modal-header h2 {
@@ -539,6 +557,33 @@
   height: 18px;
 }
 
+/* Contenedor del formulario con scroll */
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 16px;
+}
+
+/* Estilos del scroll del modal */
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: var(--input-bg);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: var(--accent-soft);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
 .form-group {
   margin-bottom: 18px;
 }
@@ -563,6 +608,7 @@
   font-size: 14px;
   font-family: inherit;
   transition: border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .form-input::placeholder,
@@ -578,7 +624,7 @@
 }
 
 .form-textarea {
-  min-height: 96px;
+  min-height: 80px;
   resize: vertical;
 }
 
@@ -586,7 +632,10 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-  margin-top: 22px;
+  margin-top: 0;
+  flex-shrink: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--surface-border);
 }
 
 .btn-cancel,
@@ -623,42 +672,165 @@
   transform: scale(0.97);
 }
 
+/* Responsive del modal */
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 100%;
+    padding: 20px;
+    max-height: 95vh;
+  }
+  
+  .modal-header h2 {
+    font-size: 17px;
+  }
+  
+  .form-group {
+    margin-bottom: 14px;
+  }
+  
+  .form-input,
+  .form-select,
+  .form-textarea {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+  
+  .btn-cancel,
+  .btn-submit {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
 /* ==========================================================================
-   Table
+   Modal de Detalles - Estilos específicos
+   ========================================================================== */
+
+.modal-detalles {
+  max-width: 600px;
+}
+
+.detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 20px;
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 12px;
+  background: var(--input-bg);
+  border-radius: var(--radius-sm);
+}
+
+.detalle-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detalle-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.detalle-valor {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.detalles-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 4px;
+}
+
+.detalles-divider::before,
+.detalles-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--surface-border);
+}
+
+.detalles-divider span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+/* Ajustes responsive para el modal de detalles */
+@media (max-width: 480px) {
+  .modal-detalles {
+    max-width: 100%;
+  }
+  
+  .detalles-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .detalle-item {
+    padding: 6px 10px;
+  }
+}
+
+/* ==========================================================================
+   Table - Actualizada con todas las columnas
    ========================================================================== */
 
 .table-container {
   border-radius: var(--radius-lg);
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: visible;
   background: var(--surface-bg);
   border: 1px solid var(--surface-border);
   box-shadow: var(--card-shadow);
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
 }
 
+/* Hacer la tabla más ancha y con mejor visualización */
 .tramites-table {
   width: 100%;
+  min-width: 1400px;
   border-collapse: collapse;
-  font-size: 13.5px;
+  font-size: 13px;
 }
 
 .tramites-table thead {
   background: var(--badge-bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .tramites-table th {
-  padding: 14px 18px;
+  padding: 14px 16px;
   text-align: left;
-  font-size: 11.5px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--text-secondary);
+  white-space: nowrap;
+  border-bottom: 2px solid var(--surface-border);
 }
 
 .tramites-table td {
-  padding: 14px 18px;
+  padding: 14px 16px;
   border-bottom: 1px solid var(--surface-border);
   color: var(--text-primary);
+  vertical-align: middle;
+  max-width: 200px;
 }
 
 .tramites-table tbody tr {
@@ -673,26 +845,21 @@
   background: var(--row-hover);
 }
 
+/* Estilos para las columnas específicas */
 .numero-col {
   font-weight: 600;
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--text-muted);
   white-space: nowrap;
+  min-width: 60px;
 }
 
-.tramite-titulo {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.tramite-titulo strong {
+.cite-col {
   font-weight: 600;
-}
-
-.tramite-descripcion {
+  color: var(--accent);
   font-size: 12px;
-  color: var(--text-secondary);
+  white-space: nowrap;
+  min-width: 120px;
 }
 
 .tipo-badge {
@@ -701,14 +868,48 @@
   border-radius: var(--radius-pill);
   background: var(--badge-bg);
   color: var(--text-primary);
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 500;
+  white-space: nowrap;
 }
 
-.dark-mode .tipo-badge {
-  color: var(--accent);
+.ubicacion-col {
+  font-size: 12px;
+  color: var(--text-secondary);
+  min-width: 150px;
+  max-width: 200px;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
+.fojas-col {
+  text-align: center;
+  font-weight: 600;
+  min-width: 60px;
+}
+
+.observacion-col {
+  min-width: 150px;
+  max-width: 200px;
+}
+
+.tramite-observacion {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: normal;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+/* Columna de acciones - fija a la derecha */
+.table-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+  min-width: 160px;
+}
+
+/* Estilos para los badges de estado */
 .estado-badge {
   display: inline-flex;
   align-items: center;
@@ -717,6 +918,7 @@
   border-radius: var(--radius-pill);
   font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .estado-badge::before {
@@ -732,12 +934,29 @@
 .estado-completado { background: rgba(76, 175, 80, 0.15); color: #43a047; }
 .estado-rechazado { background: rgba(244, 67, 54, 0.15); color: #f44336; }
 
-.table-actions {
-  display: flex;
-  gap: 8px;
+/* Mejorar visualización del scroll */
+.table-container::-webkit-scrollbar {
+  height: 10px;
 }
 
-/* Empty state */
+.table-container::-webkit-scrollbar-track {
+  background: var(--input-bg);
+  border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+  background: var(--accent-soft);
+  border-radius: 5px;
+}
+
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
+}
+
+/* ==========================================================================
+   Empty state
+   ========================================================================== */
+
 .empty-state {
   display: flex;
   flex-direction: column;
@@ -840,7 +1059,8 @@
   }
 
   .tramites-table {
-    font-size: 12px;
+    min-width: 1200px;
+    font-size: 11px;
   }
 
   .tramites-table th,
@@ -854,6 +1074,10 @@
 
   .btn-glass--sm .btn-glass-inner span.btn-glass-label {
     font-size: 10.5px;
+  }
+  
+  .table-actions {
+    min-width: 120px;
   }
 }
 
@@ -899,5 +1123,65 @@
 
   .btn-glass-inner span.btn-glass-label {
     font-size: 12px;
+  }
+  
+  .tramites-table {
+    min-width: 1000px;
+    font-size: 10px;
+  }
+  
+  .tramites-table th,
+  .tramites-table td {
+    padding: 8px 10px;
+  }
+  
+  .btn-glass--sm .btn-glass-inner {
+    padding: 4px 10px;
+  }
+  
+  .btn-glass--sm .btn-glass-inner span.btn-glass-label {
+    font-size: 9px;
+  }
+  
+  .table-actions {
+    min-width: 100px;
+    gap: 4px;
+  }
+}
+/* ==========================================================================
+   Estilos para el formulario de nuevo trámite
+   ========================================================================== */
+
+.form-section {
+  margin-bottom: 20px;
+}
+
+.form-section:last-child {
+  margin-bottom: 0;
+}
+
+.form-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 14px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent-soft);
+}
+
+.form-divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 16px 0 20px 0;
+}
+
+/* Ajustes para el modal cuando tiene muchas secciones */
+.modal-content {
+  max-width: 520px;
+}
+
+@media (max-width: 480px) {
+  .modal-content {
+    max-width: 100%;
   }
 }
