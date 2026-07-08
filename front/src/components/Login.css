@@ -697,3 +697,177 @@
     font-size: 10px;
   }
 }
+/* ============================================
+   NUEVOS ESTILOS PARA GOOGLE LOGIN Y REGISTRO
+   ============================================ */
+
+/* Enlace "Olvidaste tu contraseña" */
+.forgot-password-link {
+  text-align: right;
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.forgot-password-btn {
+  background: none;
+  border: none;
+  color: #0B2447;
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+  font-family: inherit;
+  padding: 0;
+}
+
+.forgot-password-btn:hover {
+  color: #4a9eff;
+}
+
+/* Sección de Google Login */
+.google-login-section {
+  margin-top: 16px;
+}
+
+.google-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.google-divider::before,
+.google-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(11, 36, 71, 0.15);
+}
+
+.google-divider span {
+  font-size: 10px;
+  color: #6a7a8a;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 16px;
+  border: 1.5px solid rgba(11, 36, 71, 0.15);
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: #0B2447;
+}
+
+.google-login-btn:hover {
+  border-color: #4a9eff;
+  background: #f5f9ff;
+  box-shadow: 0 2px 12px rgba(74, 158, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.google-login-btn:active {
+  transform: scale(0.98);
+}
+
+.google-login-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.google-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Estilos para el formulario de registro con Google */
+.register-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0B2447;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+.register-info {
+  background: rgba(74, 158, 255, 0.06);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+  font-size: 11px;
+  color: #0B2447;
+  text-align: center;
+}
+
+.register-info strong {
+  font-weight: 600;
+}
+
+.register-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.register-actions .btn-glass {
+  flex: 1;
+  margin-top: 0 !important;
+}
+
+.register-actions .btn-glass-secondary .btn-glass-inner {
+  background-image: linear-gradient(
+    135deg,
+    rgba(220, 220, 220, 1),
+    rgba(180, 180, 180, 1)
+  );
+}
+
+.register-actions .btn-glass-secondary .btn-glass-label {
+  color: #333 !important;
+}
+
+.register-actions .btn-glass {
+  margin-top: 0 !important;
+}
+
+/* Ajustes para inputs en modo registro */
+.login-form .btn-glass {
+  margin-top: 12px !important;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .google-login-btn {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+  
+  .google-icon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .register-actions {
+    flex-direction: column;
+  }
+  
+  .register-actions .btn-glass {
+    width: 100%;
+  }
+  
+  .forgot-password-btn {
+    font-size: 10px;
+  }
+}

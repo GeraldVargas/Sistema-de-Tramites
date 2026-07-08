@@ -3,12 +3,20 @@ import './Login.css';
 
 // Importar el logo
 import logo from '../assets/images/logo_colca1.png';
-// Importar Dashboard de forma estática (evita el error de 'require' en TypeScript)
 import Dashboard from '../pages/Dashboard';
+
+// URL del backend
+const API_URL = 'http://localhost:5000';
 
 interface LoginForm {
   email: string;
   password: string;
+}
+
+interface GoogleUserData {
+  email: string;
+  nombre: string;
+  googleId: string;
 }
 
 interface LoginProps {
@@ -24,6 +32,20 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [loginError, setLoginError] = useState<string>('');
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  
+  // Estados para Google Login
+  const [showGoogleRegister, setShowGoogleRegister] = useState<boolean>(false);
+  const [googleData, setGoogleData] = useState<{
+    sessionToken: string;
+    email: string;
+    nombre: string;
+  } | null>(null);
+  const [registerData, setRegisterData] = useState({
+    nombre: '',
+    ci: ''
+  });
+  const [googleError, setGoogleError] = useState<string>('');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -55,26 +77,155 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoginError('');
     
     if (validateForm()) {
-      if (formData.email === 'admin' && formData.password === 'admin') {
-        console.log('Login exitoso');
+      setIsLoading(true);
+      try {
+        const response = await fetch(`${API_URL}/api/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            password: formData.password
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+          console.log('Login exitoso:', data.user);
+          setIsLoggedIn(true);
+          if (onLogin) {
+            onLogin(true);
+          }
+        } else {
+          setLoginError(data.message || 'Usuario o contraseña incorrectos');
+          setFormData({
+            email: '',
+            password: ''
+          });
+          setErrors({});
+        }
+      } catch (error) {
+        console.error('Error en login:', error);
+        setLoginError('Error al conectar con el servidor');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+  };
+
+  const handleGoogleLogin = () => {
+    // Simular login con Google (datos quemados)
+    const mockGoogleUser: GoogleUserData = {
+      email: 'usuario.google@gmail.com',
+      nombre: 'Usuario Google',
+      googleId: 'google_123456789'
+    };
+    
+    setGoogleError('');
+    setIsLoading(true);
+    
+    // Enviar al backend
+    fetch(`${API_URL}/api/auth/google`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mockGoogleUser)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        if (data.requiresRegistration) {
+          // Nuevo usuario - mostrar formulario de registro
+          setGoogleData({
+            sessionToken: data.sessionToken,
+            email: data.userData.email,
+            nombre: data.userData.nombre
+          });
+          setRegisterData({
+            nombre: data.userData.nombre || '',
+            ci: ''
+          });
+          setShowGoogleRegister(true);
+        } else {
+          // Usuario ya existe - login directo
+          console.log('Login con Google exitoso:', data.user);
+          setIsLoggedIn(true);
+          if (onLogin) {
+            onLogin(true);
+          }
+        }
+      } else {
+        setGoogleError(data.message || 'Error al iniciar sesión con Google');
+      }
+    })
+    .catch(error => {
+      console.error('Error en Google Login:', error);
+      setGoogleError('Error al conectar con el servidor');
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  };
+
+  const handleGoogleRegisterComplete = async (e: FormEvent) => {
+    e.preventDefault();
+    
+    if (!registerData.ci || registerData.ci.trim() === '') {
+      setGoogleError('El CI es requerido');
+      return;
+    }
+    
+    if (!registerData.nombre || registerData.nombre.trim() === '') {
+      setGoogleError('El nombre es requerido');
+      return;
+    }
+    
+    setIsLoading(true);
+    setGoogleError('');
+    
+    try {
+      const response = await fetch(`${API_URL}/api/auth/google/complete`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sessionToken: googleData?.sessionToken,
+          nombre: registerData.nombre,
+          ci: registerData.ci
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        console.log('Registro exitoso:', data.user);
         setIsLoggedIn(true);
+        setShowGoogleRegister(false);
         if (onLogin) {
           onLogin(true);
         }
       } else {
-        setLoginError('Usuario o contraseña incorrectos');
-        setFormData({
-          email: '',
-          password: ''
-        });
-        setErrors({});
+        setGoogleError(data.message || 'Error al completar el registro');
       }
+    } catch (error) {
+      console.error('Error en registro:', error);
+      setGoogleError('Error al conectar con el servidor');
+    } finally {
+      setIsLoading(false);
     }
+  };
+
+  const handleForgotPassword = () => {
+    alert('Funcionalidad de recuperación de contraseña\n\nPor favor, contacta con el administrador del sistema.');
   };
 
   const togglePasswordVisibility = () => {
@@ -99,118 +250,184 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           </div>
 
           {loginError && <div className="login-error">{loginError}</div>}
+          {googleError && <div className="login-error">{googleError}</div>}
 
-          <form className="login-form" onSubmit={handleSubmit}>
-            <div className="login-input-container">
-              <input
-                type="text"
-                name="email"
-                className={`login-floating-input ${errors.email ? 'login-input-error' : ''}`}
-                placeholder=" "
-                value={formData.email}
-                onChange={handleChange}
-                autoComplete="username"
-              />
-              <div className="login-topline"></div>
-              <label className="login-input-label">Usuario</label>
-              <div className="login-underline"></div>
-              {errors.email && <span className="login-error-message">{errors.email}</span>}
-            </div>
+          {/* Formulario de registro con Google */}
+          {showGoogleRegister && googleData ? (
+            <form className="login-form" onSubmit={handleGoogleRegisterComplete}>
+              <h3 className="register-title">Completa tu registro</h3>
+              
+              <div className="register-info">
+                <p><strong>Email:</strong> {googleData.email}</p>
+              </div>
+              
+              <div className="login-input-container">
+                <input
+                  type="text"
+                  name="nombre"
+                  className={`login-floating-input ${!registerData.nombre ? 'login-input-error' : ''}`}
+                  placeholder=" "
+                  value={registerData.nombre}
+                  onChange={(e) => setRegisterData({...registerData, nombre: e.target.value})}
+                  required
+                />
+                <div className="login-topline"></div>
+                <label className="login-input-label">Nombre Completo</label>
+                <div className="login-underline"></div>
+              </div>
 
-            <div className="login-input-container password-wrapper">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                className={`login-floating-input password-input ${errors.password ? 'login-input-error' : ''}`}
-                placeholder=" "
-                value={formData.password}
-                onChange={handleChange}
-                autoComplete="current-password"
-              />
-              <div className="login-topline"></div>
-              <label className="login-input-label">Contraseña</label>
-              <div className="login-underline"></div>
+              <div className="login-input-container">
+                <input
+                  type="text"
+                  name="ci"
+                  className={`login-floating-input ${!registerData.ci ? 'login-input-error' : ''}`}
+                  placeholder=" "
+                  value={registerData.ci}
+                  onChange={(e) => setRegisterData({...registerData, ci: e.target.value})}
+                  required
+                />
+                <div className="login-topline"></div>
+                <label className="login-input-label">Cédula de Identidad</label>
+                <div className="login-underline"></div>
+              </div>
+
+              <div className="register-actions">
+                <button 
+                  type="button" 
+                  className="btn-glass btn-glass-secondary"
+                  onClick={() => setShowGoogleRegister(false)}
+                >
+                  <span className="btn-glass-outer">
+                    <span className="btn-glass-inner">
+                      <span className="btn-glass-label">Cancelar</span>
+                    </span>
+                  </span>
+                </button>
+                <button 
+                  type="submit" 
+                  className="btn-glass"
+                  disabled={isLoading}
+                >
+                  <span className="btn-glass-outer">
+                    <span className="btn-glass-inner">
+                      <span className="btn-glass-label">
+                        {isLoading ? 'Registrando...' : 'Registrarse'}
+                      </span>
+                    </span>
+                  </span>
+                </button>
+              </div>
+            </form>
+          ) : (
+            /* Formulario de login normal */
+            <form className="login-form" onSubmit={handleSubmit}>
+              <div className="login-input-container">
+                <input
+                  type="text"
+                  name="email"
+                  className={`login-floating-input ${errors.email ? 'login-input-error' : ''}`}
+                  placeholder=" "
+                  value={formData.email}
+                  onChange={handleChange}
+                  autoComplete="username"
+                />
+                <div className="login-topline"></div>
+                <label className="login-input-label">Usuario</label>
+                <div className="login-underline"></div>
+                {errors.email && <span className="login-error-message">{errors.email}</span>}
+              </div>
+
+              <div className="login-input-container password-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  className={`login-floating-input password-input ${errors.password ? 'login-input-error' : ''}`}
+                  placeholder=" "
+                  value={formData.password}
+                  onChange={handleChange}
+                  autoComplete="current-password"
+                />
+                <div className="login-topline"></div>
+                <label className="login-input-label">Contraseña</label>
+                <div className="login-underline"></div>
+                <button 
+                  type="button"
+                  className="password-toggle"
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                >
+                  {showPassword ? (
+                    <svg className="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                      <line x1="1" y1="1" x2="23" y2="23" />
+                    </svg>
+                  ) : (
+                    <svg className="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  )}
+                </button>
+                {errors.password && <span className="login-error-message">{errors.password}</span>}
+              </div>
+
+              {/* Enlace "Olvidaste tu contraseña" */}
+              <div className="forgot-password-link">
+                <button 
+                  type="button" 
+                  className="forgot-password-btn"
+                  onClick={handleForgotPassword}
+                >
+                  ¿Olvidaste tu contraseña?
+                </button>
+              </div>
+
               <button 
-                type="button"
-                className="password-toggle"
-                onClick={togglePasswordVisibility}
-                aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
+                type="submit" 
+                className="btn-glass"
+                disabled={isLoading}
               >
-                {showPassword ? (
-                  <svg className="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                    <line x1="1" y1="1" x2="23" y2="23" />
-                  </svg>
-                ) : (
-                  <svg className="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                    <circle cx="12" cy="12" r="3" />
-                  </svg>
-                )}
-              </button>
-              {errors.password && <span className="login-error-message">{errors.password}</span>}
-            </div>
-
-            <button type="submit" className="btn-glass">
-              <span className="btn-glass-outer">
-                <span className="btn-glass-inner">
-                  <span className="btn-glass-label">Iniciar Sesión</span>
+                <span className="btn-glass-outer">
+                  <span className="btn-glass-inner">
+                    <span className="btn-glass-label">
+                      {isLoading ? 'Cargando...' : 'Iniciar Sesión'}
+                    </span>
+                  </span>
                 </span>
-              </span>
-            </button>
-          </form>
+              </button>
+            </form>
+          )}
 
-          <div className="social-wrapper">
-            <ul className="social-icons-list">
-              <li className="social-icon facebook">
-                <span className="social-tooltip">Facebook</span>
-                <a 
-                  href="https://www.facebook.com/municipiodecolcapirhua" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="social-link"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-                  </svg>
-                </a>
-              </li>
-              <li className="social-icon twitter">
-                <span className="social-tooltip">YouTube</span>
-                <a 
-                  href="https://www.youtube.com/@gamdecolcapirhua" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="social-link"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                  </svg>
-                </a>
-              </li>
-              <li className="social-icon instagram">
-                <span className="social-tooltip">Instagram</span>
-                <a 
-                  href="https://www.instagram.com/alcaldiadecolcapirhua" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="social-link"
-                >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </div>
+          {/* Botón "Iniciar sesión con Google" (solo en modo login normal) */}
+          {!showGoogleRegister && (
+            <div className="google-login-section">
+              <div className="google-divider">
+                <span>O inicia sesión con</span>
+              </div>
+              <button 
+                type="button" 
+                className="google-login-btn"
+                onClick={handleGoogleLogin}
+                disabled={isLoading}
+              >
+                <svg className="google-icon" viewBox="0 0 24 24">
+                  <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
+                  <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+                  <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+                  <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+                </svg>
+                <span>Iniciar sesión con Google</span>
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="login-right">
         <div className="login-right-content">
           <h2>Sistema de Trámites</h2>
-        
+          <p>Plataforma de gestión de trámites municipales</p>
         </div>
       </div>
     </div>
