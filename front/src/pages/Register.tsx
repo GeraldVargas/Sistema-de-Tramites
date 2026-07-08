@@ -3,6 +3,7 @@ import './Register.css';
 import logo from '../assets/images/logo_colca1.png';
 
 interface RegisterForm {
+  usuario: string;
   nombre: string;
   ci: string;
   email: string;
@@ -17,6 +18,7 @@ interface RegisterProps {
 
 const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onBackToLogin }) => {
   const [formData, setFormData] = useState<RegisterForm>({
+    usuario: '',
     nombre: '',
     ci: '',
     email: '',
@@ -47,6 +49,10 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onBackToLogin })
 
   const validateForm = (): boolean => {
     const newErrors: Partial<RegisterForm> = {};
+
+    if (!formData.usuario || formData.usuario.trim() === '') {
+      newErrors.usuario = 'El usuario es requerido';
+    }
 
     if (!formData.nombre || formData.nombre.trim() === '') {
       newErrors.nombre = 'El nombre es requerido';
@@ -92,6 +98,7 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onBackToLogin })
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
+            usuario: formData.usuario,
             nombre: formData.nombre,
             ci: formData.ci,
             email: formData.email,
@@ -148,6 +155,20 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onBackToLogin })
           )}
 
           <form className="register-form" onSubmit={handleSubmit}>
+            {/* Usuario - NUEVO */}
+            <div className="register-input-wrapper">
+              <input
+                type="text"
+                name="usuario"
+                className={`register-input ${errors.usuario ? 'register-input-error' : ''}`}
+                placeholder="Usuario"
+                value={formData.usuario}
+                onChange={handleChange}
+                autoComplete="username"
+              />
+              {errors.usuario && <span className="register-error-message">{errors.usuario}</span>}
+            </div>
+
             {/* Nombre */}
             <div className="register-input-wrapper">
               <input
@@ -257,18 +278,18 @@ const Register: React.FC<RegisterProps> = ({ onRegisterSuccess, onBackToLogin })
             </div>
 
            <button
-            type="submit"
-            className="register-btn-glass"
-            disabled={isLoading || registerSuccess}
-            >
-            <div className="register-btn-glass-outer">
-                <div className="register-btn-glass-inner">
-                <span className="register-btn-glass-label">
-                    {isLoading ? "Registrando..." : "Crear Cuenta"}
-                </span>
-                </div>
+        type="submit"
+        className="register-btn-glass"
+        disabled={isLoading || registerSuccess}
+        >
+        <div className="register-btn-glass-outer">
+            <div className="register-btn-glass-inner">
+            <span className="register-btn-glass-label">
+                {isLoading ? "Registrando..." : "Crear Cuenta"}
+            </span>
             </div>
-            </button>
+        </div>
+        </button>
           </form>
 
           <div className="register-footer">

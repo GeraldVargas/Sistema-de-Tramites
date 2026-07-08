@@ -11,9 +11,10 @@ app.use(express.json());
 let usuarios = [
   {
     id: 1,
-    nombre: 'Admin',
+    usuario: 'admin',
+    nombre: 'Administrador',
     ci: '1234567',
-    email: 'admin',
+    email: 'admin@admin.com',
     password: 'admin',
     googleId: null,
     registradoConGoogle: false
@@ -31,8 +32,9 @@ let googleSessions = {};
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
   
+  // Buscar por usuario (email) o por nombre de usuario
   const usuario = usuarios.find(u => 
-    u.email === email && u.password === password
+    (u.email === email || u.usuario === email) && u.password === password
   );
   
   if (usuario) {
@@ -41,6 +43,7 @@ app.post('/api/login', (req, res) => {
       message: 'Login exitoso',
       user: {
         id: usuario.id,
+        usuario: usuario.usuario,
         nombre: usuario.nombre,
         email: usuario.email,
         ci: usuario.ci
@@ -56,11 +59,20 @@ app.post('/api/login', (req, res) => {
 
 // Registro de nuevo usuario
 app.post('/api/register', (req, res) => {
-  const { nombre, ci, email, password } = req.body;
+  const { usuario, nombre, ci, email, password } = req.body;
   
   // Verificar si el usuario ya existe
-  const usuarioExistente = usuarios.find(u => u.email === email);
+  const usuarioExistente = usuarios.find(u => u.usuario === usuario);
   if (usuarioExistente) {
+    return res.status(400).json({
+      success: false,
+      message: 'El nombre de usuario ya está registrado'
+    });
+  }
+  
+  // Verificar si el email ya existe
+  const emailExistente = usuarios.find(u => u.email === email);
+  if (emailExistente) {
     return res.status(400).json({
       success: false,
       message: 'El correo electrónico ya está registrado'
@@ -79,6 +91,7 @@ app.post('/api/register', (req, res) => {
   // Crear nuevo usuario
   const newUser = {
     id: usuarios.length + 1,
+    usuario,
     nombre,
     ci,
     email,
@@ -89,13 +102,14 @@ app.post('/api/register', (req, res) => {
   
   usuarios.push(newUser);
   
-  console.log(`✅ Nuevo usuario registrado: ${nombre} (${email})`);
+  console.log(`✅ Nuevo usuario registrado: ${usuario} (${nombre})`);
   
   res.json({
     success: true,
     message: 'Usuario registrado exitosamente',
     user: {
       id: newUser.id,
+      usuario: newUser.usuario,
       nombre: newUser.nombre,
       email: newUser.email,
       ci: newUser.ci
@@ -103,7 +117,7 @@ app.post('/api/register', (req, res) => {
   });
 });
 
-// Iniciar login con Google (simulado)
+// Iniciar login con Google (simulado con ventana emergente)
 app.post('/api/auth/google', (req, res) => {
   const { email, nombre, googleId } = req.body;
   
@@ -111,7 +125,6 @@ app.post('/api/auth/google', (req, res) => {
   let usuario = usuarios.find(u => u.email === email);
   
   if (usuario) {
-    // Usuario existe, verificar si tiene googleId
     if (!usuario.googleId) {
       usuario.googleId = googleId;
       usuario.registradoConGoogle = true;
@@ -132,6 +145,7 @@ app.post('/api/auth/google', (req, res) => {
       sessionToken,
       user: {
         id: usuario.id,
+        usuario: usuario.usuario,
         nombre: usuario.nombre,
         email: usuario.email,
         ci: usuario.ci
@@ -175,6 +189,7 @@ app.post('/api/auth/google/complete', (req, res) => {
   // Crear nuevo usuario
   const newUser = {
     id: usuarios.length + 1,
+    usuario: session.email.split('@')[0], // Generar usuario desde email
     nombre: nombre || session.nombre,
     ci: ci,
     email: session.email,
@@ -193,6 +208,7 @@ app.post('/api/auth/google/complete', (req, res) => {
     message: 'Usuario registrado exitosamente con Google',
     user: {
       id: newUser.id,
+      usuario: newUser.usuario,
       nombre: newUser.nombre,
       email: newUser.email,
       ci: newUser.ci
@@ -231,7 +247,7 @@ app.listen(PORT, () => {
   console.log(`✅ Servidor backend corriendo en http://localhost:${PORT}`);
   console.log(`📋 Usuarios disponibles:`);
   usuarios.forEach(u => {
-    console.log(`  - ${u.nombre} (${u.email})`);
+    console.log(`  - ${u.usuario} (${u.nombre})`);
   });
   console.log('\n🔑 Credenciales de prueba:');
   console.log('  - Usuario: admin');

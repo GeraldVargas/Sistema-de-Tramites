@@ -24,6 +24,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [showRegister, setShowRegister] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [showGooglePopup, setShowGooglePopup] = useState<boolean>(false);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -118,6 +119,59 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const handleForgotPassword = () => {
     alert('Funcionalidad de recuperación de contraseña\n\nPor favor, contacta con el administrador del sistema.');
+  };
+
+  // Google Login - Simula el popup de selección de cuenta
+  const handleGoogleLogin = () => {
+    setShowGooglePopup(true);
+  };
+
+  // Simular selección de cuenta de Google
+  const handleSelectGoogleAccount = (email: string, nombre: string) => {
+    setShowGooglePopup(false);
+    setIsLoading(true);
+    
+    // Simular datos de Google
+    const googleData = {
+      email: email,
+      nombre: nombre,
+      googleId: `google_${Date.now()}`
+    };
+    
+    // Enviar al backend
+    fetch('http://localhost:5000/api/auth/google', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(googleData)
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        if (data.requiresRegistration) {
+          // Si es nuevo usuario, mostrar mensaje y redirigir a registro
+          alert(`Bienvenido ${data.userData.nombre}!\n\nPor favor, completa tu registro.`);
+          // Aquí podrías redirigir a registro con datos precargados
+          // Por ahora, simplemente mostramos el mensaje
+          setLoginError('Cuenta de Google no registrada. Por favor, regístrate primero.');
+        } else {
+          // Usuario ya existe - login directo
+          console.log('Login con Google exitoso:', data.user);
+          setIsLoggedIn(true);
+          if (onLogin) {
+            onLogin(true);
+          }
+        }
+      }
+    })
+    .catch(error => {
+      console.error('Error en Google Login:', error);
+      setLoginError('Error al iniciar sesión con Google');
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
   };
 
   if (isLoggedIn) {
@@ -245,7 +299,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <button 
               type="button" 
               className="google-login-btn"
-              onClick={() => alert('Funcionalidad de Google Login en desarrollo')}
+              onClick={handleGoogleLogin}
+              disabled={isLoading}
             >
               <svg className="google-icon" viewBox="0 0 24 24">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/>
@@ -265,6 +320,45 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
           <p>Plataforma de gestión de trámites municipales</p>
         </div>
       </div>
+
+      {/* Popup de Google - Simula selección de cuenta */}
+      {showGooglePopup && (
+        <div className="google-popup-overlay" onClick={() => setShowGooglePopup(false)}>
+          <div className="google-popup" onClick={(e) => e.stopPropagation()}>
+            <div className="google-popup-header">
+              <img src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png" alt="Google" className="google-popup-logo" />
+              <button className="google-popup-close" onClick={() => setShowGooglePopup(false)}>✕</button>
+            </div>
+            <div className="google-popup-body">
+              <h3>Selecciona una cuenta</h3>
+              <p>Continúa con tu cuenta de Google</p>
+              <div className="google-accounts">
+                <button 
+                  className="google-account-btn"
+                  onClick={() => handleSelectGoogleAccount('usuario.google@gmail.com', 'Usuario Google')}
+                >
+                  <div className="google-account-avatar">G</div>
+                  <div className="google-account-info">
+                    <span className="google-account-name">Usuario Google</span>
+                    <span className="google-account-email">usuario.google@gmail.com</span>
+                  </div>
+                </button>
+                <button 
+                  className="google-account-btn"
+                  onClick={() => handleSelectGoogleAccount('test@gmail.com', 'Test User')}
+                >
+                  <div className="google-account-avatar">T</div>
+                  <div className="google-account-info">
+                    <span className="google-account-name">Test User</span>
+                    <span className="google-account-email">test@gmail.com</span>
+                  </div>
+                </button>
+              </div>
+              <button className="google-add-account">➕ Agregar otra cuenta</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
