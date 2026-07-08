@@ -13,7 +13,7 @@ let usuarios = [
     id: 1,
     nombre: 'Admin',
     ci: '1234567',
-    email: 'admin@admin.com',
+    email: 'admin',
     password: 'admin',
     googleId: null,
     registradoConGoogle: false
@@ -54,7 +54,56 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// Iniciar login con Google
+// Registro de nuevo usuario
+app.post('/api/register', (req, res) => {
+  const { nombre, ci, email, password } = req.body;
+  
+  // Verificar si el usuario ya existe
+  const usuarioExistente = usuarios.find(u => u.email === email);
+  if (usuarioExistente) {
+    return res.status(400).json({
+      success: false,
+      message: 'El correo electrónico ya está registrado'
+    });
+  }
+  
+  // Verificar si el CI ya existe
+  const ciExistente = usuarios.find(u => u.ci === ci);
+  if (ciExistente) {
+    return res.status(400).json({
+      success: false,
+      message: 'La cédula de identidad ya está registrada'
+    });
+  }
+  
+  // Crear nuevo usuario
+  const newUser = {
+    id: usuarios.length + 1,
+    nombre,
+    ci,
+    email,
+    password,
+    googleId: null,
+    registradoConGoogle: false
+  };
+  
+  usuarios.push(newUser);
+  
+  console.log(`✅ Nuevo usuario registrado: ${nombre} (${email})`);
+  
+  res.json({
+    success: true,
+    message: 'Usuario registrado exitosamente',
+    user: {
+      id: newUser.id,
+      nombre: newUser.nombre,
+      email: newUser.email,
+      ci: newUser.ci
+    }
+  });
+});
+
+// Iniciar login con Google (simulado)
 app.post('/api/auth/google', (req, res) => {
   const { email, nombre, googleId } = req.body;
   
@@ -64,12 +113,10 @@ app.post('/api/auth/google', (req, res) => {
   if (usuario) {
     // Usuario existe, verificar si tiene googleId
     if (!usuario.googleId) {
-      // Actualizar usuario existente con googleId
       usuario.googleId = googleId;
       usuario.registradoConGoogle = true;
     }
     
-    // Crear sesión temporal para el registro
     const sessionToken = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
     googleSessions[sessionToken] = {
       email: usuario.email,
@@ -138,13 +185,12 @@ app.post('/api/auth/google/complete', (req, res) => {
   
   usuarios.push(newUser);
   
-  // Actualizar sesión
   session.completado = true;
   session.userId = newUser.id;
   
   res.json({
     success: true,
-    message: 'Usuario registrado exitosamente',
+    message: 'Usuario registrado exitosamente con Google',
     user: {
       id: newUser.id,
       nombre: newUser.nombre,
@@ -177,11 +223,17 @@ app.get('/api/usuarios', (req, res) => {
   res.json(usuarios);
 });
 
-// Iniciar servidor
+// ============================================
+// INICIAR SERVIDOR
+// ============================================
+
 app.listen(PORT, () => {
   console.log(`✅ Servidor backend corriendo en http://localhost:${PORT}`);
   console.log(`📋 Usuarios disponibles:`);
   usuarios.forEach(u => {
     console.log(`  - ${u.nombre} (${u.email})`);
   });
+  console.log('\n🔑 Credenciales de prueba:');
+  console.log('  - Usuario: admin');
+  console.log('  - Contraseña: admin');
 });

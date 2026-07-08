@@ -1,8 +1,8 @@
 /* ============================================
-   LOGIN - Estilos completos
+   REGISTER - Estilos completos
    ============================================ */
 
-.login-container {
+.register-container {
   position: relative;
   width: 100vw;
   height: 100vh;
@@ -11,7 +11,7 @@
   background-color: #ffffff;
 }
 
-.login-left {
+.register-left {
   position: relative;
   width: 50%;
   height: 100%;
@@ -22,7 +22,7 @@
   background-color: #ffffff;
 }
 
-.login-right {
+.register-right {
   position: relative;
   width: 50%;
   height: 100%;
@@ -49,7 +49,7 @@
   background-size: var(--s) calc(var(--s) * 0.577);
 }
 
-.login-right::before {
+.register-right::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -57,7 +57,7 @@
   z-index: 1;
 }
 
-.login-right-content {
+.register-right-content {
   position: relative;
   z-index: 2;
   text-align: center;
@@ -65,14 +65,14 @@
   padding: 0 40px;
 }
 
-.login-right-content h2 {
+.register-right-content h2 {
   font-size: 28px;
   font-weight: 700;
   margin: 0 0 12px 0;
   color: #ffffff;
 }
 
-.login-right-content p {
+.register-right-content p {
   font-size: 14px;
   color: #BFE3F7;
   line-height: 1.5;
@@ -198,12 +198,12 @@
 .logo-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .logo-image {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   object-fit: contain;
   border-radius: 50%;
   box-shadow: 0 3px 12px rgba(74, 158, 255, 0.25);
@@ -216,13 +216,13 @@
 }
 
 /* ============================================
-   LOGIN CARD
+   REGISTER CARD
    ============================================ */
 
-.login-card {
+.register-card {
   position: relative;
   z-index: 2;
-  max-width: 220px;
+  max-width: 240px;
   border-radius: 20px;
   padding: 16px 20px;
   border: 3px solid rgba(255, 255, 255, 0.9);
@@ -237,7 +237,111 @@
   transition: all 0.5s ease;
 }
 
-.login-error {
+.register-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0B2447;
+  text-align: center;
+  margin: 0 0 2px 0;
+}
+
+.register-subtitle {
+  font-size: 11px;
+  color: #6a7a8a;
+  text-align: center;
+  margin: 0 0 10px 0;
+}
+
+/* ============================================
+   INPUTS ESTILO escannord
+   ============================================ */
+
+.register-input-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.register-input {
+  width: 100%;
+  height: 2rem;
+  background-color: transparent;
+  border: 2px solid transparent;
+  color: #0B2447;
+  padding: 0 1rem;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), 
+              inset 2px 2px 5px rgba(53, 51, 51, 0.3),
+              -1px -1px 20px rgba(59, 56, 56, 0.2);
+  outline: none;
+  border-radius: 10px;
+  font-size: 12px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
+}
+
+.register-input::placeholder {
+  color: #8a9aaa;
+  font-size: 11px;
+}
+
+.register-input:focus {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.4), 
+              inset 2px 2px 5px rgba(0, 0, 0, 0.4),
+              -1px -1px 5px rgba(68, 67, 67, 0.3),
+              inset -1px -1px 5px rgba(66, 65, 65, 0.4);
+}
+
+.register-input-error {
+  border-color: #ff4444 !important;
+  box-shadow: 2px 2px 5px rgba(255, 68, 68, 0.2), 
+              inset 2px 2px 5px rgba(255, 68, 68, 0.1) !important;
+}
+
+/* Password wrapper */
+.password-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 2.5rem !important;
+}
+
+.register-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: #0B2447;
+  z-index: 2;
+}
+
+.register-password-toggle:hover {
+  background: rgba(11, 36, 71, 0.08);
+  color: #4a9eff;
+}
+
+.register-password-toggle .eye-icon {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* ============================================
+   ERRORES Y MENSAJES
+   ============================================ */
+
+.register-error {
   text-align: center;
   color: #ff4444;
   font-size: 11px;
@@ -248,179 +352,30 @@
   border-radius: 6px;
 }
 
-/* ============================================
-   INPUTS FLOATING LABEL
-   ============================================ */
-
-.login-input-container {
-  position: relative;
-  width: 100%;
-  margin-top: 7px;
+.register-success {
+  text-align: center;
+  color: #2e7d32;
+  font-size: 11px;
+  margin-top: 3px;
+  margin-bottom: 5px;
+  padding: 4px 8px;
+  background: rgba(46, 125, 50, 0.08);
+  border-radius: 6px;
 }
 
-.login-floating-input {
-  width: 100%;
-  padding: 3px 6px;
-  height: 20px;
-  border: 1.5px solid #0B2447;
-  border-top: none;
-  border-bottom: none;
-  font-size: 10px;
-  background: #EAF6FC;
-  outline: none;
-  box-shadow: 3px 3px 0px 0px #BFE3F7;
-  transition: all 0.4s;
-  box-sizing: border-box;
-  color: #0B2447;
-}
-
-.login-floating-input::placeholder {
-  color: transparent;
-}
-
-.login-floating-input:focus {
-  box-shadow: none;
-  outline: none !important;
-  transition: all 0.4s;
-}
-
-.login-input-error {
-  border-color: #ff4444 !important;
-  box-shadow: 3px 3px 0px 0px #BFE3F7 !important;
-}
-
-.login-input-label {
-  position: absolute;
-  top: 4px;
-  left: 6px;
-  color: #0B2447;
-  font-size: 9px;
-  transition: all 0.3s ease;
-  transform: scale(0);
-  transform-origin: left center;
-  pointer-events: none;
-  z-index: -1;
-  background: #EAF6FC;
-  padding: 0 3px;
-}
-
-.login-topline {
-  position: absolute;
-  content: "";
-  background-color: #0B2447;
-  width: 0%;
-  height: 1.5px;
-  right: 0;
-  top: 0;
-  transition: all 0.4s;
-}
-
-.login-floating-input:focus ~ .login-topline {
-  width: 35%;
-  transition: all 0.4s;
-}
-
-.login-underline {
-  position: absolute;
-  content: "";
-  background-color: #0B2447;
-  width: 0%;
-  height: 1.5px;
-  right: 0;
-  bottom: 0;
-  transition: all 0.4s;
-}
-
-.login-floating-input:focus ~ .login-underline {
-  width: 100%;
-  transition: all 0.4s;
-}
-
-.login-floating-input:focus ~ .login-input-label,
-.login-floating-input:not(:placeholder-shown) ~ .login-input-label {
-  top: -7px;
-  transform: scale(1);
-  z-index: 1;
-  transition: all 0.4s;
-}
-
-.password-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-.password-input {
-  padding-right: 20px !important;
-}
-
-.password-toggle {
-  position: absolute;
-  right: 2px;
-  top: 2px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 1px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: all 0.3s ease;
-  color: #0B2447;
-  z-index: 2;
-}
-
-.password-toggle:hover {
-  background: rgba(11, 36, 71, 0.08);
-  color: #1c4e9e;
-}
-
-.password-toggle .eye-icon {
-  width: 9px;
-  height: 9px;
-  stroke: currentColor;
-  fill: none;
-}
-
-.login-error-message {
+.register-error-message {
   color: #ff4444;
-  font-size: 10px;
+  font-size: 9px;
   margin-top: 2px;
   display: block;
   padding-left: 6px;
 }
 
 /* ============================================
-   FORGOT PASSWORD
+   BOTÓN REGISTER - CORREGIDO
    ============================================ */
 
-.forgot-password-link {
-  text-align: right;
-  margin-top: 6px;
-  margin-bottom: 10px;
-}
-
-.forgot-password-btn {
-  background: none;
-  border: none;
-  color: #0B2447;
-  font-size: 10px;
-  cursor: pointer;
-  text-decoration: underline;
-  transition: color 0.3s ease;
-  font-family: inherit;
-  padding: 0;
-}
-
-.forgot-password-btn:hover {
-  color: #4a9eff;
-}
-
-/* ============================================
-   BOTÓN GLASS
-   ============================================ */
-
-.btn-glass {
+.register-btn-glass {
   all: unset;
   cursor: pointer;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -428,19 +383,19 @@
   border-radius: 100em;
   display: block;
   width: 100%;
-  margin-top: 12px;
+  margin-top: 14px;
   background-color: rgba(0, 0, 0, 0.75);
   box-shadow:
     -0.15em -0.15em 0.15em -0.075em rgba(5, 5, 5, 0.25),
     0.0375em 0.0375em 0.0675em 0 rgba(5, 5, 5, 0.1);
 }
 
-.btn-glass:disabled {
+.register-btn-glass:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.btn-glass::after {
+.register-btn-glass::after {
   content: "";
   position: absolute;
   z-index: 0;
@@ -460,7 +415,7 @@
   mix-blend-mode: multiply;
 }
 
-.btn-glass-outer {
+.register-btn-glass-outer {
   position: relative;
   z-index: 1;
   border-radius: inherit;
@@ -472,19 +427,19 @@
     0.15em 0.3em 0.1em -0.01em rgba(5, 5, 5, 0.25);
 }
 
-.btn-glass:hover .btn-glass-outer {
+.register-btn-glass:hover .register-btn-glass-outer {
   box-shadow:
     0 0 0 0 rgba(5, 5, 5, 1),
     0 0 0 0 rgba(5, 5, 5, 0.5),
     0 0 0 0 rgba(5, 5, 5, 0.25);
 }
 
-.btn-glass-inner {
+.register-btn-glass-inner {
   --inset: 0.035em;
   position: relative;
   z-index: 1;
   border-radius: inherit;
-  padding: 0.7em 1.2em;
+  padding: 0.6em 1.2em;
   background-image: linear-gradient(
     135deg,
     rgba(230, 230, 230, 1),
@@ -508,7 +463,7 @@
     -0.075em -0.25em 0.25em 0.1em inset rgba(5, 5, 5, 0.25);
 }
 
-.btn-glass:hover .btn-glass-inner {
+.register-btn-glass:hover .register-btn-glass-inner {
   clip-path: inset(
     clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px)
       clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) round 100em
@@ -523,13 +478,13 @@
     -0.075em -0.12em 0.2em 0.1em inset rgba(5, 5, 5, 0.25);
 }
 
-.btn-glass-label {
+.register-btn-glass-label {
   position: relative;
   z-index: 4;
   font-family: "Inter", sans-serif;
   letter-spacing: -0.05em;
   font-weight: 600;
-  font-size: 12px;
+  font-size: 13px;
   color: #1a1a1a;
   transition: transform 250ms ease;
   display: block;
@@ -541,32 +496,30 @@
   text-align: center;
 }
 
-.btn-glass:hover .btn-glass-label {
+.register-btn-glass:hover .register-btn-glass-label {
   transform: scale(0.975);
 }
 
-.btn-glass:active .btn-glass-inner {
+.register-btn-glass:active .register-btn-glass-inner {
   transform: scale(0.975);
 }
 
 /* ============================================
-   ENLACE "CREAR CUENTA"
+   FOOTER Y ENLACES
    ============================================ */
 
-.register-link-section {
+.register-footer {
+  margin-top: 12px;
   text-align: center;
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(11, 36, 71, 0.08);
-}
-
-.register-link-text {
   font-size: 11px;
   color: #6a7a8a;
+}
+
+.register-footer p {
   margin: 0;
 }
 
-.register-link-btn {
+.register-back-link {
   background: none;
   border: none;
   color: #0B2447;
@@ -579,73 +532,8 @@
   padding: 0;
 }
 
-.register-link-btn:hover {
+.register-back-link:hover {
   color: #4a9eff;
-}
-
-/* ============================================
-   GOOGLE LOGIN
-   ============================================ */
-
-.google-login-section {
-  margin-top: 14px;
-}
-
-.google-divider {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 10px;
-}
-
-.google-divider::before,
-.google-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: rgba(11, 36, 71, 0.15);
-}
-
-.google-divider span {
-  font-size: 10px;
-  color: #6a7a8a;
-  white-space: nowrap;
-  font-weight: 500;
-}
-
-.google-login-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 7px 14px;
-  border: 1.5px solid rgba(11, 36, 71, 0.15);
-  border-radius: 10px;
-  background: #ffffff;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-family: inherit;
-  font-size: 12px;
-  font-weight: 500;
-  color: #0B2447;
-}
-
-.google-login-btn:hover {
-  border-color: #4a9eff;
-  background: #f5f9ff;
-  box-shadow: 0 2px 12px rgba(74, 158, 255, 0.15);
-  transform: translateY(-1px);
-}
-
-.google-login-btn:active {
-  transform: scale(0.98);
-}
-
-.google-icon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
 }
 
 /* ============================================
@@ -653,65 +541,65 @@
    ============================================ */
 
 @media (max-width: 768px) {
-  .login-container {
+  .register-container {
     flex-direction: column;
   }
-  .login-left {
+  .register-left {
     width: 100%;
     height: 100%;
   }
-  .login-right {
+  .register-right {
     display: none;
   }
 }
 
 @media (max-width: 480px) {
-  .login-card {
+  .register-card {
     max-width: 190px;
     padding: 12px 14px;
   }
   
   .logo-image {
-    width: 50px;
-    height: 50px;
-  }
-
-  .password-toggle .eye-icon {
-    width: 10px;
-    height: 10px;
+    width: 45px;
+    height: 45px;
   }
   
-  .btn-glass-inner {
+  .register-title {
+    font-size: 14px;
+  }
+  
+  .register-subtitle {
+    font-size: 10px;
+  }
+  
+  .register-input {
+    height: 1.8rem;
+    font-size: 11px;
+    padding: 0 0.8rem;
+  }
+  
+  .register-input::placeholder {
+    font-size: 10px;
+  }
+  
+  .register-password-toggle .eye-icon {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .register-btn-glass-inner {
     padding: 0.5em 1em;
   }
   
-  .btn-glass-label {
-    font-size: 11px;
+  .register-btn-glass-label {
+    font-size: 12px;
   }
   
-  .login-error-message {
-    font-size: 9px;
+  .register-footer {
+    font-size: 10px;
   }
   
-  .login-error {
+  .register-back-link {
     font-size: 10px;
-  }
-
-  .register-link-text {
-    font-size: 10px;
-  }
-
-  .register-link-btn {
-    font-size: 10px;
-  }
-
-  .google-login-btn {
-    font-size: 11px;
-    padding: 6px 12px;
-  }
-
-  .google-icon {
-    width: 16px;
-    height: 16px;
   }
 }
