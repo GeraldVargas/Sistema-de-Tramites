@@ -1,4 +1,5 @@
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
 import './Login.css';
 import logo from '../assets/images/logo_colca1.png';
 import Dashboard from '../pages/Dashboard';
@@ -11,9 +12,10 @@ interface LoginForm {
 
 interface LoginProps {
   onLogin?: (success: boolean) => void;
+  onGoToAdminLogin?: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
+const Login: React.FC<LoginProps> = ({ onLogin, onGoToAdminLogin }) => {
   const [formData, setFormData] = useState<LoginForm>({
     email: '',
     password: ''
@@ -119,6 +121,15 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
   const handleForgotPassword = () => {
     alert('Funcionalidad de recuperación de contraseña\n\nPor favor, contacta con el administrador del sistema.');
+  };
+
+  const handleGoToAdminLogin = () => {
+    if (onGoToAdminLogin) {
+      onGoToAdminLogin();
+      return;
+    }
+
+    window.location.assign('/admin');
   };
 
   // Google Login - Simula el popup de selección de cuenta
@@ -288,6 +299,19 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 onClick={handleGoToRegister}
               >
                 Crear cuenta
+              </button>
+            </p>
+          </div>
+
+          <div className="register-link-section">
+            <p className="register-link-text">
+              ¿Eres administrador?{' '}
+              <button
+                type="button"
+                className="register-link-btn"
+                onClick={handleGoToAdminLogin}
+              >
+                Entrar a /admin
               </button>
             </p>
           </div>

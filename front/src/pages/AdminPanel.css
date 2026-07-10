@@ -1,0 +1,245 @@
+.admin-panel-shell {
+  min-height: 100vh;
+  width: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(251, 191, 36, 0.18), transparent 24%),
+    radial-gradient(circle at bottom right, rgba(59, 130, 246, 0.12), transparent 28%),
+    linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #0f172a;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(16px);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.admin-panel-brand {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.admin-panel-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.admin-panel-kicker {
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.admin-panel-brand h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.admin-panel-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.admin-panel-user {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.admin-panel-primary,
+.admin-panel-secondary {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 16px;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.admin-panel-primary {
+  background: #0f172a;
+  color: #f8fafc;
+}
+
+.admin-panel-secondary {
+  background: rgba(15, 23, 42, 0.08);
+  color: #0f172a;
+}
+
+.admin-panel-main {
+  padding: 28px 32px 40px;
+  display: grid;
+  gap: 24px;
+}
+
+.admin-panel-hero {
+  padding: 28px;
+  border-radius: 28px;
+  background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%);
+  color: #f8fafc;
+  box-shadow: 0 24px 50px rgba(15, 23, 42, 0.18);
+}
+
+.admin-panel-hero h2 {
+  margin: 14px 0 10px;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  color: #ffffff;
+}
+
+.admin-panel-hero p {
+  margin: 0;
+  max-width: 680px;
+  color: rgba(248, 250, 252, 0.82);
+  line-height: 1.7;
+}
+
+.admin-panel-badge {
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.admin-panel-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.admin-stat-card {
+  padding: 24px;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 10px;
+}
+
+.admin-stat-card span {
+  color: #64748b;
+  font-size: 0.95rem;
+}
+
+.admin-stat-card strong {
+  font-size: 2rem;
+  color: #0f172a;
+}
+
+.admin-panel-table-card {
+  padding: 24px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+}
+
+.admin-panel-table-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: baseline;
+  margin-bottom: 18px;
+}
+
+.admin-panel-table-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.admin-panel-table-header p {
+  margin: 0;
+  color: #64748b;
+}
+
+.admin-panel-table-wrap {
+  overflow-x: auto;
+}
+
+.admin-panel-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-panel-table th,
+.admin-panel-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  text-align: left;
+  white-space: nowrap;
+}
+
+.admin-panel-table th {
+  color: #334155;
+  font-size: 0.86rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-panel-empty {
+  text-align: center !important;
+  color: #64748b;
+  padding: 28px 12px;
+}
+
+.admin-role-badge {
+  display: inline-flex;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-role-badge--admin {
+  background: rgba(234, 88, 12, 0.14);
+  color: #c2410c;
+}
+
+.admin-role-badge--user {
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+}
+
+@media (max-width: 980px) {
+  .admin-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .admin-panel-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .admin-panel-header,
+  .admin-panel-main {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .admin-panel-table-card,
+  .admin-panel-hero,
+  .admin-stat-card {
+    border-radius: 22px;
+  }
+}

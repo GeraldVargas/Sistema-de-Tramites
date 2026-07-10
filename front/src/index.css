@@ -5,7 +5,7 @@
   padding: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
   background: var(--bg);
 }
 
@@ -36,11 +36,10 @@ body {
 }
 
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
   text-align: center;
-  border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;

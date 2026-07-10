@@ -16,6 +16,7 @@ let usuarios = [
     ci: '1234567',
     email: 'admin@admin.com',
     password: 'admin',
+    role: 'admin',
     googleId: null,
     registradoConGoogle: false
   }
@@ -46,13 +47,45 @@ app.post('/api/login', (req, res) => {
         usuario: usuario.usuario,
         nombre: usuario.nombre,
         email: usuario.email,
-        ci: usuario.ci
+        ci: usuario.ci,
+        role: usuario.role || 'user'
       }
     });
   } else {
     res.status(401).json({
       success: false,
       message: 'Usuario o contraseña incorrectos'
+    });
+  }
+});
+
+// Login exclusivo para administradores
+app.post('/api/admin/login', (req, res) => {
+  const { email, password } = req.body;
+
+  const usuario = usuarios.find(u =>
+    (u.email === email || u.usuario === email) &&
+    u.password === password &&
+    u.role === 'admin'
+  );
+
+  if (usuario) {
+    res.json({
+      success: true,
+      message: 'Login de administrador exitoso',
+      user: {
+        id: usuario.id,
+        usuario: usuario.usuario,
+        nombre: usuario.nombre,
+        email: usuario.email,
+        ci: usuario.ci,
+        role: usuario.role
+      }
+    });
+  } else {
+    res.status(401).json({
+      success: false,
+      message: 'Acceso denegado. Credenciales de administrador inválidas'
     });
   }
 });
@@ -96,6 +129,7 @@ app.post('/api/register', (req, res) => {
     ci,
     email,
     password,
+    role: 'user',
     googleId: null,
     registradoConGoogle: false
   };
@@ -112,7 +146,8 @@ app.post('/api/register', (req, res) => {
       usuario: newUser.usuario,
       nombre: newUser.nombre,
       email: newUser.email,
-      ci: newUser.ci
+      ci: newUser.ci,
+      role: newUser.role
     }
   });
 });
@@ -194,6 +229,7 @@ app.post('/api/auth/google/complete', (req, res) => {
     ci: ci,
     email: session.email,
     password: null,
+    role: 'user',
     googleId: session.googleId,
     registradoConGoogle: true
   };
@@ -211,7 +247,8 @@ app.post('/api/auth/google/complete', (req, res) => {
       usuario: newUser.usuario,
       nombre: newUser.nombre,
       email: newUser.email,
-      ci: newUser.ci
+      ci: newUser.ci,
+      role: newUser.role
     }
   });
 });
@@ -237,6 +274,13 @@ app.post('/api/auth/google/verify', (req, res) => {
 // Obtener todos los usuarios (para debug)
 app.get('/api/usuarios', (req, res) => {
   res.json(usuarios);
+});
+
+// Obtener usuarios para el panel administrador
+app.get('/api/admin/usuarios', (req, res) => {
+  res.json(
+    usuarios.map(({ password, googleId, ...usuario }) => usuario)
+  );
 });
 
 // ============================================
