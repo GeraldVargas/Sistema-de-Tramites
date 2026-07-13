@@ -5,7 +5,7 @@ const PORT = 5000;
 
 // Middlewares
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Datos quemados de usuarios (simulando BD)
 let usuarios = [
@@ -26,14 +26,252 @@ let usuarios = [
 let googleSessions = {};
 
 // ============================================
+// BASE DE DATOS PARA TRÁMITES COMPLETA
+// ============================================
+
+let tramites = [
+  // Ejemplo de trámite existente
+  {
+    id: 1,
+    // Datos del solicitante
+    solicitante: {
+      ci: '12345678',
+      nombre: 'Juan Perez',
+      celular: '71234567',
+      fechaNacimiento: '1990-01-15'
+    },
+    // Datos del apoderado (opcional)
+    apoderado: null,
+    // Documentos requeridos
+    documentos: {
+      folioReal: 'base64_string...',
+      solicitud: 'base64_string...',
+      plano: 'base64_string...',
+      testimonioCompraVenta: null
+    },
+    // Datos del trámite (los que pides)
+    tramiteDetalle: {
+      id_tramite: 1,
+      cite_tramite: 'CITE-2026-001',
+      id_tipo_tramite: 1,
+      tipo_tramite: 'Licencia',
+      id_documento: 1001,
+      estado_tramite: 'en_proceso',
+      id_funcionario: 101,
+      ubicacion: 'Oficina 301 - Área de Licencias',
+      fojas: 25,
+      num_resolucion: 456,
+      fecha_resolucion: '2026-06-27',
+      observacion: 'Documentación completa, en espera de firma',
+      // Información adicional
+      descripcion: 'Solicitud de licencia para establecimiento comercial',
+      estado_reg: 'ACTIVO',
+      cargo: 'Jefe de Licencias',
+      email_empresa: 'comercial@empresa.com'
+    },
+    // Datos de pago
+    precio: 150,
+    comprobantePago: null,
+    estado: 'pendiente', // pendiente, pago_pendiente, en_revision, completado, rechazado
+    fechaCreacion: '2026-07-13T10:30:00',
+    fechaActualizacion: '2026-07-13T10:30:00'
+  }
+];
+
+// ============================================
+// ENDPOINTS DE TRÁMITES
+// ============================================
+
+// Crear nuevo trámite
+app.post('/api/tramites', (req, res) => {
+  const { 
+    solicitante, 
+    apoderado, 
+    documentos, 
+    tramiteDetalle,
+    cantidadHojas,
+    precio
+  } = req.body;
+
+  // Validar campos obligatorios
+  if (!solicitante || !solicitante.ci || !solicitante.nombre || 
+      !solicitante.celular || !solicitante.fechaNacimiento) {
+    return res.status(400).json({
+      success: false,
+      message: 'Faltan datos del solicitante'
+    });
+  }
+
+  if (!documentos || !documentos.folioReal || !documentos.solicitud || !documentos.plano) {
+    return res.status(400).json({
+      success: false,
+      message: 'Faltan documentos requeridos (Folio Real, Solicitud, Plano)'
+    });
+  }
+
+  if (!tramiteDetalle) {
+    return res.status(400).json({
+      success: false,
+      message: 'Faltan detalles del trámite'
+    });
+  }
+
+  if (!cantidadHojas || cantidadHojas <= 0) {
+    return res.status(400).json({
+      success: false,
+      message: 'La cantidad de hojas es obligatoria'
+    });
+  }
+
+  // Crear nuevo trámite
+  const nuevoTramite = {
+    id: tramites.length + 1,
+    solicitante: {
+      ci: solicitante.ci,
+      nombre: solicitante.nombre,
+      celular: solicitante.celular,
+      fechaNacimiento: solicitante.fechaNacimiento
+    },
+    apoderado: apoderado || null,
+    documentos: {
+      folioReal: documentos.folioReal,
+      solicitud: documentos.solicitud,
+      plano: documentos.plano,
+      testimonioCompraVenta: documentos.testimonioCompraVenta || null
+    },
+    tramiteDetalle: {
+      id_tramite: tramites.length + 1,
+      cite_tramite: tramiteDetalle.cite_tramite || `CITE-2026-${String(tramites.length + 1).padStart(3, '0')}`,
+      id_tipo_tramite: tramiteDetalle.id_tipo_tramite || 1,
+      tipo_tramite: tramiteDetalle.tipo_tramite || 'Licencia',
+      id_documento: tramiteDetalle.id_documento || 1000 + tramites.length + 1,
+      estado_tramite: tramiteDetalle.estado_tramite || 'pendiente',
+      id_funcionario: tramiteDetalle.id_funcionario || 101,
+      ubicacion: tramiteDetalle.ubicacion || 'Colcapirhua',
+      fojas: parseInt(cantidadHojas),
+      num_resolucion: tramiteDetalle.num_resolucion || 0,
+      fecha_resolucion: tramiteDetalle.fecha_resolucion || new Date().toISOString().split('T')[0],
+      observacion: tramiteDetalle.observacion || 'Sin observación',
+      descripcion: tramiteDetalle.descripcion || 'Descripción pendiente',
+      estado_reg: tramiteDetalle.estado_reg || 'PENDIENTE',
+      cargo: tramiteDetalle.cargo || 'Por asignar',
+      email_empresa: tramiteDetalle.email_empresa || 'sin-email@empresa.com'
+    },
+    precio: precio || 150,
+    comprobantePago: null,
+    estado: 'pendiente',
+    fechaCreacion: new Date().toISOString(),
+    fechaActualizacion: new Date().toISOString()
+  };
+
+  tramites.push(nuevoTramite);
+  console.log(`✅ Nuevo trámite creado: ID ${nuevoTramite.id}`);
+
+  res.json({
+    success: true,
+    message: 'Trámite creado exitosamente',
+    tramite: nuevoTramite,
+    qrData: {
+      tramiteId: nuevoTramite.id,
+      monto: nuevoTramite.precio,
+      concepto: `Pago trámite #${nuevoTramite.id}`,
+      beneficiario: 'Gobierno Municipal de Colcapirhua',
+      qrString: `PAGO_TRAMITE|${nuevoTramite.id}|${nuevoTramite.precio}|COLCAPIRHUA|${nuevoTramite.solicitante.ci}`
+    }
+  });
+});
+
+// Obtener todos los trámites
+app.get('/api/tramites', (req, res) => {
+  res.json(tramites);
+});
+
+// Obtener un trámite por ID
+app.get('/api/tramites/:id', (req, res) => {
+  const id = parseInt(req.params.id);
+  const tramite = tramites.find(t => t.id === id);
+  
+  if (!tramite) {
+    return res.status(404).json({
+      success: false,
+      message: 'Trámite no encontrado'
+    });
+  }
+  
+  res.json(tramite);
+});
+
+// Subir comprobante de pago
+app.post('/api/tramites/:id/comprobante', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { comprobante } = req.body;
+  
+  const tramite = tramites.find(t => t.id === id);
+  
+  if (!tramite) {
+    return res.status(404).json({
+      success: false,
+      message: 'Trámite no encontrado'
+    });
+  }
+  
+  if (!comprobante) {
+    return res.status(400).json({
+      success: false,
+      message: 'El comprobante de pago es obligatorio'
+    });
+  }
+  
+  tramite.comprobantePago = comprobante;
+  tramite.estado = 'pago_pendiente';
+  tramite.fechaActualizacion = new Date().toISOString();
+  
+  res.json({
+    success: true,
+    message: 'Comprobante de pago subido exitosamente',
+    tramite: tramite
+  });
+});
+
+// Actualizar estado del trámite (para admin)
+app.put('/api/tramites/:id/estado', (req, res) => {
+  const id = parseInt(req.params.id);
+  const { estado } = req.body;
+  
+  const tramite = tramites.find(t => t.id === id);
+  
+  if (!tramite) {
+    return res.status(404).json({
+      success: false,
+      message: 'Trámite no encontrado'
+    });
+  }
+  
+  const estadosValidos = ['pendiente', 'pago_pendiente', 'en_revision', 'completado', 'rechazado'];
+  if (!estadosValidos.includes(estado)) {
+    return res.status(400).json({
+      success: false,
+      message: 'Estado no válido'
+    });
+  }
+  
+  tramite.estado = estado;
+  tramite.fechaActualizacion = new Date().toISOString();
+  
+  res.json({
+    success: true,
+    message: 'Estado del trámite actualizado',
+    tramite: tramite
+  });
+});
+
+// ============================================
 // ENDPOINTS DE AUTENTICACIÓN
 // ============================================
 
-// Login con usuario/contraseña
 app.post('/api/login', (req, res) => {
   const { email, password } = req.body;
   
-  // Buscar por usuario (email) o por nombre de usuario
   const usuario = usuarios.find(u => 
     (u.email === email || u.usuario === email) && u.password === password
   );
@@ -59,7 +297,6 @@ app.post('/api/login', (req, res) => {
   }
 });
 
-// Login exclusivo para administradores
 app.post('/api/admin/login', (req, res) => {
   const { email, password } = req.body;
 
@@ -90,11 +327,9 @@ app.post('/api/admin/login', (req, res) => {
   }
 });
 
-// Registro de nuevo usuario
 app.post('/api/register', (req, res) => {
   const { usuario, nombre, ci, email, password } = req.body;
   
-  // Verificar si el usuario ya existe
   const usuarioExistente = usuarios.find(u => u.usuario === usuario);
   if (usuarioExistente) {
     return res.status(400).json({
@@ -103,7 +338,6 @@ app.post('/api/register', (req, res) => {
     });
   }
   
-  // Verificar si el email ya existe
   const emailExistente = usuarios.find(u => u.email === email);
   if (emailExistente) {
     return res.status(400).json({
@@ -112,7 +346,6 @@ app.post('/api/register', (req, res) => {
     });
   }
   
-  // Verificar si el CI ya existe
   const ciExistente = usuarios.find(u => u.ci === ci);
   if (ciExistente) {
     return res.status(400).json({
@@ -121,7 +354,6 @@ app.post('/api/register', (req, res) => {
     });
   }
   
-  // Crear nuevo usuario
   const newUser = {
     id: usuarios.length + 1,
     usuario,
@@ -152,11 +384,9 @@ app.post('/api/register', (req, res) => {
   });
 });
 
-// Iniciar login con Google (simulado con ventana emergente)
 app.post('/api/auth/google', (req, res) => {
   const { email, nombre, googleId } = req.body;
   
-  // Verificar si el usuario ya existe
   let usuario = usuarios.find(u => u.email === email);
   
   if (usuario) {
@@ -187,7 +417,6 @@ app.post('/api/auth/google', (req, res) => {
       }
     });
   } else {
-    // Nuevo usuario - requiere completar registro
     const sessionToken = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
     googleSessions[sessionToken] = {
       email,
@@ -209,7 +438,6 @@ app.post('/api/auth/google', (req, res) => {
   }
 });
 
-// Completar registro de usuario con Google
 app.post('/api/auth/google/complete', (req, res) => {
   const { sessionToken, nombre, ci } = req.body;
   
@@ -221,10 +449,9 @@ app.post('/api/auth/google/complete', (req, res) => {
     });
   }
   
-  // Crear nuevo usuario
   const newUser = {
     id: usuarios.length + 1,
-    usuario: session.email.split('@')[0], // Generar usuario desde email
+    usuario: session.email.split('@')[0],
     nombre: nombre || session.nombre,
     ci: ci,
     email: session.email,
@@ -253,7 +480,6 @@ app.post('/api/auth/google/complete', (req, res) => {
   });
 });
 
-// Verificar sesión de Google
 app.post('/api/auth/google/verify', (req, res) => {
   const { sessionToken } = req.body;
   
@@ -271,12 +497,10 @@ app.post('/api/auth/google/verify', (req, res) => {
   });
 });
 
-// Obtener todos los usuarios (para debug)
 app.get('/api/usuarios', (req, res) => {
   res.json(usuarios);
 });
 
-// Obtener usuarios para el panel administrador
 app.get('/api/admin/usuarios', (req, res) => {
   res.json(
     usuarios.map(({ password, googleId, ...usuario }) => usuario)

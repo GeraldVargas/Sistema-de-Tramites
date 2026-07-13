@@ -1,0 +1,551 @@
+/* ============================================
+   NUEVO TRÁMITE - Estilos
+   ============================================ */
+
+.nuevo-tramite-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.nuevo-tramite-card {
+  width: 100%;
+  max-width: 700px;
+  max-height: 90vh;
+  background: var(--surface-bg, #ffffff);
+  border-radius: 24px;
+  padding: 32px;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.nuevo-tramite-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.nuevo-tramite-logo {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-bottom: 12px;
+}
+
+.nuevo-tramite-header h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin: 0 0 4px 0;
+}
+
+.nuevo-tramite-header p {
+  font-size: 14px;
+  color: var(--text-muted, #64748b);
+  margin: 0;
+}
+
+/* Formulario */
+.nuevo-tramite-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-section {
+  padding: 16px;
+  background: var(--input-bg, #f8fafc);
+  border-radius: 16px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin: 0 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(74, 158, 255, 0.2);
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #334155);
+  margin-bottom: 4px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(15, 23, 42, 0.1);
+  border-radius: 10px;
+  background: var(--surface-bg, #ffffff);
+  color: var(--text-primary, #0f172a);
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4a9eff;
+  box-shadow: 0 0 0 3px rgba(74, 158, 255, 0.1);
+}
+
+.form-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.input-error {
+  border-color: #ff4444 !important;
+}
+
+.form-input::placeholder {
+  color: #94a3b8;
+}
+
+.error-message {
+  display: block;
+  font-size: 12px;
+  color: #ff4444;
+  margin-top: 4px;
+}
+
+/* File Input */
+.file-input {
+  display: none;
+}
+
+.file-label {
+  display: inline-block;
+  padding: 10px 18px;
+  border: 2px dashed rgba(74, 158, 255, 0.3);
+  border-radius: 10px;
+  background: var(--surface-bg, #ffffff);
+  color: var(--text-secondary, #334155);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  width: 100%;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.file-label:hover {
+  border-color: #4a9eff;
+  background: rgba(74, 158, 255, 0.05);
+}
+
+.file-name {
+  display: block;
+  font-size: 13px;
+  color: #4a9eff;
+  margin-top: 4px;
+}
+
+/* Checkbox */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: var(--surface-bg, #ffffff);
+  border-radius: 10px;
+  border: 1.5px solid rgba(15, 23, 42, 0.1);
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #4a9eff;
+}
+
+.checkbox-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #0f172a);
+  cursor: pointer;
+}
+
+.apoderado-fields {
+  margin-top: 16px;
+  padding: 16px;
+  background: var(--surface-bg, #ffffff);
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.apoderado-fields h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #0f172a);
+  margin: 0 0 12px 0;
+}
+
+/* Help text */
+.help-text {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted, #64748b);
+  margin-top: 4px;
+}
+
+/* Botones */
+.form-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.btn-crear {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #1a5fa8, #4a9eff);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-crear:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(74, 158, 255, 0.4);
+}
+
+.btn-crear:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-cancelar {
+  padding: 12px 32px;
+  border: 1.5px solid rgba(15, 23, 42, 0.1);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--text-secondary, #334155);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancelar:hover {
+  background: rgba(15, 23, 42, 0.05);
+}
+
+/* QR Section */
+.qr-section {
+  text-align: center;
+  padding: 24px;
+  background: var(--input-bg, #f8fafc);
+  border-radius: 16px;
+  margin: 16px 0;
+}
+
+.qr-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin: 0 0 16px 0;
+}
+
+.qr-container {
+  display: inline-block;
+  padding: 16px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.qr-info {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--text-secondary, #334155);
+  line-height: 1.6;
+}
+
+/* Comprobante section */
+.comprobante-section {
+  padding: 16px;
+  background: var(--input-bg, #f8fafc);
+  border-radius: 16px;
+  margin-top: 16px;
+}
+
+.comprobante-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin: 0 0 8px 0;
+}
+
+.comprobante-info {
+  font-size: 14px;
+  color: var(--text-muted, #64748b);
+  margin: 0 0 16px 0;
+}
+
+.btn-subir-comprobante {
+  padding: 12px 32px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2e7d32, #66bb6a);
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-right: 12px;
+}
+
+.btn-subir-comprobante:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(46, 125, 50, 0.4);
+}
+
+.btn-subir-comprobante:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Info del trámite */
+.tramite-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+  background: var(--input-bg, #f8fafc);
+  border-radius: 12px;
+  margin: 16px 0;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.info-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted, #64748b);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-value {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #0f172a);
+}
+
+.tramite-id {
+  font-size: 18px;
+  font-weight: 700;
+  color: #4a9eff;
+  margin: 8px 0 0 0;
+}
+
+.estado-pendiente {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: rgba(255, 193, 7, 0.15);
+  color: #d99e00;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.monto {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+/* Acciones en la sección de comprobante */
+.acciones {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+/* Scroll del modal */
+.nuevo-tramite-card::-webkit-scrollbar {
+  width: 6px;
+}
+
+.nuevo-tramite-card::-webkit-scrollbar-track {
+  background: var(--input-bg, #f8fafc);
+  border-radius: 3px;
+}
+
+.nuevo-tramite-card::-webkit-scrollbar-thumb {
+  background: rgba(74, 158, 255, 0.3);
+  border-radius: 3px;
+}
+
+.nuevo-tramite-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 158, 255, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .nuevo-tramite-card {
+    padding: 20px;
+    max-height: 95vh;
+  }
+
+  .tramite-info {
+    grid-template-columns: 1fr;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-crear,
+  .btn-cancelar {
+    width: 100%;
+  }
+
+  .acciones {
+    flex-direction: column;
+  }
+
+  .btn-subir-comprobante {
+    width: 100%;
+    margin-right: 0;
+  }
+  /* Estilos para el detalle completo del trámite */
+.tramite-detalle-completo {
+  margin: 16px 0;
+  padding: 16px;
+  background: var(--input-bg, #f8fafc);
+  border-radius: 16px;
+  border: 1px solid rgba(74, 158, 255, 0.15);
+}
+
+.tramite-detalle-completo h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-primary, #0f172a);
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid rgba(74, 158, 255, 0.2);
+}
+
+.detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  background: var(--surface-bg, #ffffff);
+  border-radius: 8px;
+}
+
+.detalle-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detalle-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted, #64748b);
+}
+
+.detalle-valor {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary, #0f172a);
+  word-break: break-word;
+}
+
+.detalles-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 4px;
+}
+
+.detalles-divider::before,
+.detalles-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--surface-border, #e2e8f0);
+}
+
+.detalles-divider span {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary, #334155);
+  white-space: nowrap;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.estado-pendiente {
+  background: rgba(255, 193, 7, 0.15);
+  color: #d99e00;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .detalles-grid {
+    grid-template-columns: 1fr;
+  }
+}
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ThemeSwitch from '../components/ThemeSwitch';
 import Footer from '../components/Footer';
 import './Dashboard.css';
+import NuevoTramite from './NuevoTramite';
 
 // Importar logo
 import logo from '../assets/images/logo_colca1.png';
@@ -346,7 +347,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
           </div>
         </div>
 
-        {/* Modal Nuevo Trámite - Con todos los campos de ambas tablas */}
+        {/* Modal Nuevo Trámite - Versión anterior (para mantener compatibilidad) */}
         {showNewTramite && (
           <div className="modal-overlay" onClick={() => setShowNewTramite(false)}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -776,6 +777,18 @@ const Dashboard: React.FC<DashboardProps> = ({ onLogout }) => {
         {/* Footer */}
         <Footer onLogout={onLogout} isDarkMode={isDarkMode} />
       </main>
+
+      {/* Nuevo Trámite - Componente completo con QR y comprobante */}
+      {showNewTramite && (
+        <NuevoTramite 
+          onTramiteCreado={() => {
+            setShowNewTramite(false);
+            // Aquí puedes agregar lógica para recargar la lista de trámites
+            alert('✅ Trámite creado exitosamente');
+          }}
+          onCancelar={() => setShowNewTramite(false)}
+        />
+      )}
     </div>
   );
 };

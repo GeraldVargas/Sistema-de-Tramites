@@ -75,9 +75,17 @@
   color: #f8fafc;
 }
 
+.admin-panel-primary:hover {
+  background: #1e293b;
+}
+
 .admin-panel-secondary {
   background: rgba(15, 23, 42, 0.08);
   color: #0f172a;
+}
+
+.admin-panel-secondary:hover {
+  background: rgba(15, 23, 42, 0.15);
 }
 
 .admin-panel-main {
@@ -115,6 +123,39 @@
   border: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.82rem;
   font-weight: 700;
+}
+
+/* Tabs - Estilo original mantenido */
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  padding: 4px;
+  background: rgba(255, 255, 255, 0.6);
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.admin-tab {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.admin-tab:hover {
+  background: rgba(74, 158, 255, 0.08);
+}
+
+.admin-tab.active {
+  background: #0f172a;
+  color: #f8fafc;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.2);
 }
 
 .admin-panel-stats {
@@ -219,6 +260,365 @@
   color: #1d4ed8;
 }
 
+/* Estados para trámites - Manteniendo el mismo estilo */
+.estado-pendiente {
+  background: rgba(255, 193, 7, 0.15);
+  color: #d99e00;
+}
+
+.estado-pago-pendiente {
+  background: rgba(255, 107, 53, 0.15);
+  color: #ff6b35;
+}
+
+.estado-en-proceso {
+  background: rgba(33, 150, 243, 0.15);
+  color: #2196f3;
+}
+
+.estado-completado {
+  background: rgba(76, 175, 80, 0.15);
+  color: #43a047;
+}
+
+.estado-rechazado {
+  background: rgba(244, 67, 54, 0.15);
+  color: #f44336;
+}
+
+/* Botones de acción */
+.table-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: nowrap;
+}
+
+.btn-glass {
+  all: unset;
+  cursor: pointer;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  position: relative;
+  border-radius: 100em;
+  --glass-bg: rgba(15, 45, 85, 0.85);
+  --glass-inner-from: rgba(210, 230, 255, 1);
+  --glass-inner-to: rgba(160, 200, 250, 1);
+  --glass-label-from: rgba(15, 45, 85, 1);
+  --glass-label-to: rgba(26, 95, 168, 1);
+  --glass-icon-color: #1a5fa8;
+  background-color: var(--glass-bg);
+  box-shadow: -0.15em -0.15em 0.15em -0.075em rgba(5, 15, 30, 0.35), 0.0375em 0.0375em 0.0675em 0 rgba(5, 15, 30, 0.15);
+}
+
+.btn-glass--sm .btn-glass-inner {
+  padding: 6px 16px;
+  gap: 6px;
+}
+
+.btn-glass--sm .btn-glass-inner span.btn-glass-label {
+  font-size: 11.5px;
+}
+
+.btn-glass--sm .btn-glass-icon svg {
+  width: 13px;
+  height: 13px;
+}
+
+.btn-glass--danger {
+  --glass-bg: rgba(110, 20, 20, 0.85);
+  --glass-inner-from: rgba(255, 218, 218, 1);
+  --glass-inner-to: rgba(255, 172, 172, 1);
+  --glass-label-from: rgba(110, 20, 20, 1);
+  --glass-label-to: rgba(204, 51, 51, 1);
+  --glass-icon-color: #b33030;
+}
+
+.btn-glass--warning {
+  --glass-bg: rgba(110, 82, 8, 0.85);
+  --glass-inner-from: rgba(255, 240, 205, 1);
+  --glass-inner-to: rgba(255, 209, 122, 1);
+  --glass-label-from: rgba(110, 82, 8, 1);
+  --glass-label-to: rgba(184, 134, 10, 1);
+  --glass-icon-color: #b8860a;
+}
+
+.btn-glass--info {
+  --glass-bg: rgba(26, 95, 168, 0.85);
+  --glass-inner-from: rgba(180, 220, 255, 1);
+  --glass-inner-to: rgba(130, 190, 250, 1);
+  --glass-label-from: rgba(26, 95, 168, 1);
+  --glass-label-to: rgba(26, 95, 168, 1);
+  --glass-icon-color: #1a5fa8;
+}
+
+.btn-glass-outer {
+  position: relative;
+  z-index: 1;
+  display: block;
+  border-radius: inherit;
+  transition: box-shadow 300ms ease;
+  will-change: box-shadow;
+  box-shadow: 0 0.05em 0.05em -0.01em rgba(5, 15, 30, 1), 0 0.01em 0.01em -0.01em rgba(5, 15, 30, 0.5), 0.15em 0.3em 0.1em -0.01em rgba(5, 15, 30, 0.25);
+}
+
+.btn-glass:hover .btn-glass-outer {
+  box-shadow: 0 0 0 0 rgba(5, 15, 30, 1), 0 0 0 0 rgba(5, 15, 30, 0.5), 0 0 0 0 rgba(5, 15, 30, 0.25);
+}
+
+.btn-glass-inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: inherit;
+  padding: 11px 24px;
+  background-image: linear-gradient(135deg, var(--glass-inner-from), var(--glass-inner-to));
+  transition: box-shadow 300ms ease, clip-path 250ms ease, background-image 250ms ease, transform 250ms ease;
+  will-change: box-shadow, clip-path, background-image, transform;
+  overflow: clip;
+  clip-path: inset(0 0 0 0 round 100em);
+  box-shadow: 0 0 0 0 inset rgba(5, 15, 30, 0.1), -0.05em -0.05em 0.05em 0 inset rgba(5, 15, 30, 0.25), 0 0 0 0 inset rgba(5, 15, 30, 0.1), 0 0 0.05em 0.2em inset rgba(255, 255, 255, 0.25), 0.025em 0.05em 0.1em 0 inset rgba(255, 255, 255, 1), 0.12em 0.12em 0.12em inset rgba(255, 255, 255, 0.25), -0.075em -0.25em 0.25em 0.1em inset rgba(5, 15, 30, 0.25);
+}
+
+.btn-glass:hover .btn-glass-inner {
+  clip-path: inset(clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) clamp(1px, 0.0625em, 2px) round 100em);
+  box-shadow: 0.1em 0.15em 0.05em 0 inset rgba(5, 15, 30, 0.75), -0.025em -0.03em 0.05em 0.025em inset rgba(5, 15, 30, 0.5), 0.25em 0.25em 0.2em 0 inset rgba(5, 15, 30, 0.5), 0 0 0.05em 0.5em inset rgba(255, 255, 255, 0.15), 0 0 0 0 inset rgba(255, 255, 255, 1), 0.12em 0.12em 0.12em inset rgba(255, 255, 255, 0.25), -0.075em -0.12em 0.2em 0.1em inset rgba(5, 15, 30, 0.25);
+}
+
+.btn-glass-icon {
+  position: relative;
+  z-index: 4;
+  display: flex;
+  color: var(--glass-icon-color);
+}
+
+.btn-glass-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 2.5;
+}
+
+.btn-glass-inner span.btn-glass-label {
+  position: relative;
+  z-index: 4;
+  font-family: inherit;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+  font-size: 13.5px;
+  color: rgba(0, 0, 0, 0);
+  background-image: linear-gradient(135deg, var(--glass-label-from), var(--glass-label-to));
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: transform 250ms ease;
+  display: block;
+  will-change: transform;
+  text-shadow: rgba(0, 0, 0, 0.1) 0 0 0.1em;
+  user-select: none;
+}
+
+.btn-glass:hover .btn-glass-inner span.btn-glass-label {
+  transform: scale(0.975);
+}
+
+.btn-glass:active .btn-glass-inner {
+  transform: scale(0.975);
+}
+
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 15, 25, 0.55);
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.2s ease;
+  padding: 20px;
+}
+
+.modal-content {
+  width: 90%;
+  max-width: 700px;
+  max-height: 90vh;
+  padding: 28px;
+  border-radius: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  animation: slideUp 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+}
+
+.modal-header h2 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.modal-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  transform: rotate(90deg);
+}
+
+.modal-close svg {
+  width: 18px;
+  height: 18px;
+}
+
+.modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(74, 158, 255, 0.3);
+  border-radius: 3px;
+}
+
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(74, 158, 255, 0.5);
+}
+
+.detalles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 16px;
+}
+
+.detalle-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.detalle-item.full-width {
+  grid-column: 1 / -1;
+}
+
+.detalle-label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.detalle-valor {
+  font-size: 14px;
+  font-weight: 500;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+.detalles-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0 4px;
+}
+
+.detalles-divider::before,
+.detalles-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.detalles-divider span {
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.estado-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+  flex-shrink: 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.btn-cancel {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 12px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: #cbd5e1;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive - Manteniendo el estilo original */
 @media (max-width: 980px) {
   .admin-panel-header {
     flex-direction: column;
@@ -227,6 +627,18 @@
 
   .admin-panel-stats {
     grid-template-columns: 1fr;
+  }
+  
+  .admin-tabs {
+    flex-direction: column;
+  }
+  
+  .admin-tab {
+    text-align: center;
+  }
+  
+  .table-actions {
+    flex-wrap: wrap;
   }
 }
 
@@ -241,5 +653,14 @@
   .admin-panel-hero,
   .admin-stat-card {
     border-radius: 22px;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    max-width: 100%;
+  }
+  
+  .detalles-grid {
+    grid-template-columns: 1fr;
   }
 }
